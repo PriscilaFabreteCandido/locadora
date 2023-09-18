@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { DialogModule } from 'primeng/dialog';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TableModule } from 'primeng/table';
@@ -10,7 +10,11 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { MenubarComponent } from './components/menubar/menubar.component';
 import { MenubarModule } from 'primeng/menubar';
 import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CreateGenericComponent } from './components/cadastros/create-generic/create-generic.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { InputNumberModule } from 'primeng/inputnumber';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,12 +24,18 @@ import { CreateGenericComponent } from './components/cadastros/create-generic/cr
     CreateGenericComponent
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule,
     TableModule,
     MegaMenuModule,
     MenubarModule,
-    ButtonModule
+    ButtonModule,
+    DialogModule,
+    InputTextModule,
+    FormsModule,
+    ReactiveFormsModule,
+    InputNumberModule
 
   ],
   providers: [],
