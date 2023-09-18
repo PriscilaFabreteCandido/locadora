@@ -1,5 +1,10 @@
 package br.com.locadora.DTO;
 
-public class ItemDTO {
+import java.util.Date;
 
+public class ItemDTO {
+    private Long id_item;
+    private String numSerie;
+    private Date dtAquisicao;
+    private String tipoItem;
 }

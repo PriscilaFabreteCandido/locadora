@@ -15,6 +15,6 @@ public class Classe {
     @Column(name = "valor")
     private float valor;
 
-    @Column(name = "prazo_devolucao")
+    @Column(name = "prazoDevolucao")
     private int prazoDevolucao;
 }
