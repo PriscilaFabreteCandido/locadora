@@ -1,0 +1,50 @@
+[33mcommit 85aeaaa093a28c2599942d074e02d69819180d46[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Reflog: HEAD@{0} (William <william.debortoli@hotmail.com>)
+Reflog message: checkout: moving from a to main
+Merge: d73dc6d 9daa716
+Author: William <william.debortoli@hotmail.com>
+Date:   Wed Sep 13 23:37:05 2023 -0300
+
+    Merge branch 'main' of https://github.com/williamdbc/backend-locadora
+
+[33mcommit 85aeaaa093a28c2599942d074e02d69819180d46[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Reflog: HEAD@{1} (William <william.debortoli@hotmail.com>)
+Reflog message: checkout: moving from main to a
+Merge: d73dc6d 9daa716
+Author: William <william.debortoli@hotmail.com>
+Date:   Wed Sep 13 23:37:05 2023 -0300
+
+    Merge branch 'main' of https://github.com/williamdbc/backend-locadora
+
+[33mcommit 85aeaaa093a28c2599942d074e02d69819180d46[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Reflog: HEAD@{2} (William <william.debortoli@hotmail.com>)
+Reflog message: pull: Merge made by the 'ort' strategy.
+Merge: d73dc6d 9daa716
+Author: William <william.debortoli@hotmail.com>
+Date:   Wed Sep 13 23:37:05 2023 -0300
+
+    Merge branch 'main' of https://github.com/williamdbc/backend-locadora
+
+[33mcommit d73dc6d90a73ef0a99288b9aac16c6edc7312ff1[m
+Reflog: HEAD@{3} (William <william.debortoli@hotmail.com>)
+Reflog message: commit: Pacotes e classes criados
+Author: William <william.debortoli@hotmail.com>
+Date:   Wed Sep 13 23:33:20 2023 -0300
+
+    Pacotes e classes criados
+
+[33mcommit 5dc65c5f9f5d36934af897edc443b9c73f581825[m
+Reflog: HEAD@{4} (William <william.debortoli@hotmail.com>)
+Reflog message: Branch: renamed refs/heads/master to refs/heads/main
+Author: William <william.debortoli@hotmail.com>
+Date:   Sun Sep 10 17:55:21 2023 -0300
+
+    First commit
+
+[33mcommit 5dc65c5f9f5d36934af897edc443b9c73f581825[m
+Reflog: HEAD@{6} (William <william.debortoli@hotmail.com>)
+Reflog message: commit (initial): First commit
+Author: William <william.debortoli@hotmail.com>
+Date:   Sun Sep 10 17:55:21 2023 -0300
+
+    First commit
