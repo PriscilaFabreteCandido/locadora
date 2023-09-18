@@ -1,0 +1,24 @@
+<div class="flex flex-row">
+  <h1>{{nomeEntidade}}</h1>
+  <p-button label="Cadastrar" styleClass="p-button-success"></p-button>
+</div>
+
+<create-generic>
+</create-generic>
+
+<p-table [columns]="cols" [value]="results" [tableStyle]="{ 'min-width': '50rem' }">
+  <ng-template pTemplate="header" let-columns>
+      <tr>
+          <th *ngFor="let col of columns">
+              {{ col.header }}
+          </th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+          <td *ngFor="let col of columns">
+              {{ rowData[col.field] }}
+          </td>
+      </tr>
+  </ng-template>
+</p-table>

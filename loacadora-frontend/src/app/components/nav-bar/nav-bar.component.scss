@@ -1,0 +1,57 @@
+/* Estilo para a barra de navegação */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #141414; /* Cor de fundo da barra de navegação */
+  padding: 10px 20px;
+}
+
+.flex{
+  display: flex;
+}
+/* Estilo para o logotipo */
+.logo img {
+  width: 100px; /* Largura do logotipo */
+  height: auto; /* Altura ajustável */
+}
+
+/* Estilo para os links da barra de navegação */
+.navbar-links ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.white.navbar-links a {
+  text-decoration: none; /* Remove sublinhado */
+  color: inherit; /* Define a cor do texto para o valor padrão */
+}
+.white{
+  list-style: none;
+  color: white;
+  padding: 0.5rem;
+  margin: 0rem;
+}
+
+.navbar-links li {
+  display: inline;
+  margin-right: 20px;
+}
+
+.navbar-links a {
+  text-decoration: none;
+  color: white; /* Cor do texto dos links */
+}
+
+/* Estilo para o botão no final da barra de navegação */
+.navbar-button .btn {
+  background-color: #007bff; /* Cor de fundo do botão */
+  color: white; /* Cor do texto do botão */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+/* Estilize o botão de acordo com suas preferências */
