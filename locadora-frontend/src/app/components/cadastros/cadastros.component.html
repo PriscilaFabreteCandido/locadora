@@ -28,7 +28,7 @@
 
 <p-dialog [header]="'Cadastrar ' + nomeEntidade" [(visible)]="openDialog" [responsive]="true"
   [style]="{ 'width': '50vw', 'height': '60hw' }">
-  <create-generic [atributos]="cols" (formularioEnviado)="processarFormulario($event)">
+  <create-generic [atributos]="cols" [idEntidade]="idEntidade" [rota]="rota + '/adicionar'" (formularioEnviado)="processarFormulario($event)">
   </create-generic>
 </p-dialog>
 

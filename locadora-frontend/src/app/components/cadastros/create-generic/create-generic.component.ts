@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ConsultasService } from 'src/app/services/consultas.service';
 
 @Component({
   selector: 'create-generic',
@@ -8,13 +9,16 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class CreateGenericComponent implements OnInit{
   @Input() atributos: any[] = [];
-  @Input() modelGeneric: any;
+  @Input() idEntidade: any;
   @Output() formularioEnviado = new EventEmitter<any>();
+  @Input() rota: string = '';
 
   public form:FormGroup;
   submitted: boolean = false;
 
-  constructor(private fb:FormBuilder) {
+
+  constructor(private fb:FormBuilder,
+              private consultasService: ConsultasService) {
       this.form = fb.group({});
   }
 
@@ -31,9 +35,12 @@ export class CreateGenericComponent implements OnInit{
       this.submitted = false;
       const formData = this.form.value;
 
-      this.formularioEnviado.emit(formData);
-      // Limpe o formulário após o envio, se necessário
-      this.form.reset();
+      console.log('formData', formData)
+      this.consultasService.create(formData, this.rota).subscribe(resp => {
+        this.formularioEnviado.emit(formData);
+        this.form.reset();
+      });
+
     } else {
       this.submitted = true;
     }

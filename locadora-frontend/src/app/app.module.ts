@@ -15,6 +15,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CreateGenericComponent } from './components/cadastros/create-generic/create-generic.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { HttpClientModule } from '@angular/common/http';
+import { ConsultasService } from './services/consultas.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,10 +38,11 @@ import { InputNumberModule } from 'primeng/inputnumber';
     InputTextModule,
     FormsModule,
     ReactiveFormsModule,
-    InputNumberModule
+    InputNumberModule,
+    HttpClientModule
 
   ],
-  providers: [],
+  providers: [ConsultasService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
