@@ -1,8 +1,10 @@
 package br.com.locadora.Controller;
 
+import br.com.locadora.DTO.DiretorDTO;
 import br.com.locadora.Model.Diretor;
 import br.com.locadora.Service.DiretorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,12 +27,14 @@ public class DiretorController {
     }
 
     @PostMapping("/adicionar")
-    public Diretor cadastrarDiretor(@RequestBody Diretor novoDiretor){
+    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
+    public Diretor cadastrarDiretor(@RequestBody DiretorDTO novoDiretor){
         return diretorService.inserir(novoDiretor);
     }
 
     @PutMapping("/editar/{id}")
-    public Diretor atualizarDiretor(@RequestBody Diretor diretor, @PathVariable Long id){
+    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
+    public Diretor atualizarDiretor(@RequestBody DiretorDTO diretor, @PathVariable Long id){
         return diretorService.atualizar(diretor, id);
     }
 

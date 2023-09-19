@@ -2,6 +2,8 @@ package br.com.locadora.Model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Date;
+
 @Entity
 @Getter @Setter
 public class Classe {
@@ -16,5 +18,5 @@ public class Classe {
     private float valor;
 
     @Column(name = "prazoDevolucao")
-    private int prazoDevolucao;
+    private Date prazoDevolucao;
 }

@@ -1,7 +1,9 @@
 package br.com.locadora.DTO;
 
-import java.util.Date;
+import lombok.Data;
 
+import java.util.Date;
+@Data
 public class ItemDTO {
     private Long id_item;
     private String numSerie;

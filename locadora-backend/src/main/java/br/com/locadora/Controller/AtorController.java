@@ -1,10 +1,12 @@
 package br.com.locadora.Controller;
 
+import br.com.locadora.DTO.AtorDTO;
 import br.com.locadora.Model.Ator;
 import br.com.locadora.Service.AtorService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -36,9 +38,10 @@ public class AtorController {
     }
 
     @PostMapping("/adicionar")
-    public ResponseEntity<Ator> cadastrarAtor(@RequestBody Ator novoAtor){
+    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<Ator> cadastrarAtor(@RequestBody AtorDTO atorDTO){
         try{
-            Ator ator = atorService.inserir(novoAtor);
+            Ator ator = atorService.inserir(atorDTO);
             return ResponseEntity.status(HttpStatus.OK).body(ator);
         } catch (IllegalArgumentException mensagem){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -46,9 +49,10 @@ public class AtorController {
     }
 
     @PutMapping("/editar/{id}")
-    public ResponseEntity<Ator> atualizarAtor(@RequestBody Ator ator, @PathVariable Long id){
+    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<Ator> atualizarAtor(@RequestBody AtorDTO atorDTO, @PathVariable Long id){
         try{
-            Ator atorAtualizado = atorService.atualizar(ator, id);
+            Ator atorAtualizado = atorService.atualizar(atorDTO, id);
             return ResponseEntity.status(HttpStatus.OK).body(atorAtualizado);
         } catch (ResponseStatusException mensagem){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

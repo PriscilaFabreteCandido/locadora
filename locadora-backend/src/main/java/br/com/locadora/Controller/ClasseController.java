@@ -1,8 +1,10 @@
 package br.com.locadora.Controller;
 
+import br.com.locadora.DTO.ClasseDTO;
 import br.com.locadora.Model.Classe;
 import br.com.locadora.Service.ClasseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,12 +27,14 @@ public class ClasseController {
     }
 
     @PostMapping("/adicionar")
-    public Classe cadastrarClasse(@RequestBody Classe novaClasse){
+    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
+    public Classe cadastrarClasse(@RequestBody ClasseDTO novaClasse){
         return classeService.inserir(novaClasse);
     }
 
     @PutMapping("/editar/{id}")
-    public Classe atualizarClasse(@RequestBody Classe classe, @PathVariable Long id){
+    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
+    public Classe atualizarClasse(@RequestBody ClasseDTO classe, @PathVariable Long id){
         return classeService.atualizar(classe, id);
     }
 

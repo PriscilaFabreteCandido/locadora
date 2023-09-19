@@ -1,5 +1,6 @@
 package br.com.locadora.Service;
 
+import br.com.locadora.DTO.ClasseDTO;
 import br.com.locadora.Model.Classe;
 import br.com.locadora.Repository.ClasseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,20 @@ public class ClasseService  {
     @Autowired
     private ClasseRepository classeRepository;
 
-    public Classe inserir(Classe classe){
+    public Classe inserir(ClasseDTO classeDTO){
+        if(classeDTO == null){
+            throw new IllegalArgumentException("Classe vazia");
+        }
+
+        Classe classe = new Classe();
+        classe.setNome(classeDTO.getNome());
+        classe.setPrazoDevolucao(classe.getPrazoDevolucao());
+        classe.setValor(classeDTO.getValor());
+
         return classeRepository.save(classe);
     }
 
-    public Classe atualizar(Classe classeParametro, Long id){
+    public Classe atualizar(ClasseDTO classeParametro, Long id){
         Classe classeEncontrada = findById(id);
 
         if(classeEncontrada != null){

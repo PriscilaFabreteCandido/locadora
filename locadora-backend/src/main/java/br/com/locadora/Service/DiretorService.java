@@ -1,5 +1,6 @@
 package br.com.locadora.Service;
 
+import br.com.locadora.DTO.DiretorDTO;
 import br.com.locadora.Model.Diretor;
 import br.com.locadora.Repository.DiretorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,18 @@ public class DiretorService {
     @Autowired
     private DiretorRepository diretorRepository;
 
-    public Diretor inserir(Diretor diretor){
+    public Diretor inserir(DiretorDTO diretorDTO){
+        if(diretorDTO == null){
+            throw new IllegalArgumentException("Classe vazia");
+        }
+
+        Diretor diretor = new Diretor();
+        diretor.setNome(diretorDTO.getNome());
+
         return diretorRepository.save(diretor);
     }
 
-    public Diretor atualizar(Diretor diretorParametro, Long id){
+    public Diretor atualizar(DiretorDTO diretorParametro, Long id){
         Diretor diretorEncontrado = findById(id);
 
         if(diretorEncontrado != null){
