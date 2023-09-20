@@ -97,9 +97,16 @@ export class CadastrosComponent implements OnInit{
   deletarEntidade(entity: any){
     var idValue = this.getIdEntidade(entity);
     this.consultasService.delete(idValue, this.rota + '/excluir').subscribe(resp => {
-      this.results = this.results.filter(x => x.id != entity.id);
+      this.setResults(entity);
     });
+  }
 
+  setResults(entity: any){
+    for (const key in entity) {
+      if (key.startsWith('id')) {
+        this.results = this.results.filter(x => x[key] != entity[key]);
+      }
+    }
   }
 
   getIdEntidade(entity: any): any{

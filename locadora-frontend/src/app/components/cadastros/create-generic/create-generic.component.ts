@@ -28,20 +28,23 @@ export class CreateGenericComponent implements OnInit{
       this.form.addControl(atributo.field, this.fb.control(null, Validators.required));
     });
 
-    if(this.idEntidade > 0){
-      this.preencherForm();
+    if(!this.idEntidade || this.idEntidade > 0){
+      this.getById();
     }
 
   }
 
   getById(){
     this.consultasService.getById(this.idEntidade, this.rota + '/editar').subscribe(resp => {
-      let obj = this.preencherForm();
+      if(resp){
+        let obj = resp;
+        this.preencherForm(obj);
+      }
     });
   }
 
-  preencherForm(){
-    // atributos.forEach((atributo) => {
+  preencherForm(obj: any){
+    // obj.forEach((atributo) => {
     //   // Use patchValue para definir o valor do campo sem substituir outros valores
     //   this.form.patchValue({
     //     [atributo.field]: atributo.value
@@ -55,10 +58,14 @@ export class CreateGenericComponent implements OnInit{
       this.submitted = false;
       const formData = this.form.value;
 
-      this.consultasService.create(formData, this.rota).subscribe(resp => {
-        this.formularioEnviado.emit(formData);
-        this.form.reset();
-      });
+      if(!this.idEntidade || this.idEntidade <= 0){
+        this.consultasService.create(formData, this.rota).subscribe(resp => {
+          this.formularioEnviado.emit(formData);
+          this.form.reset();
+        });
+      }else{
+
+      }
 
     } else {
       this.submitted = true;
