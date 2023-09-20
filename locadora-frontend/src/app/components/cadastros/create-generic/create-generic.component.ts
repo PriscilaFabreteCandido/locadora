@@ -16,18 +16,38 @@ export class CreateGenericComponent implements OnInit{
   public form:FormGroup;
   submitted: boolean = false;
 
-
   constructor(private fb:FormBuilder,
               private consultasService: ConsultasService) {
       this.form = fb.group({});
   }
 
- ngOnInit() {
+  ngOnInit() {
     this.form = this.fb.group({});
 
     this.atributos.forEach((atributo) => {
       this.form.addControl(atributo.field, this.fb.control(null, Validators.required));
     });
+
+    if(this.idEntidade > 0){
+      this.preencherForm();
+    }
+
+  }
+
+  getById(){
+    this.consultasService.getById(this.idEntidade, this.rota + '/editar').subscribe(resp => {
+      let obj = this.preencherForm();
+    });
+  }
+
+  preencherForm(){
+    // atributos.forEach((atributo) => {
+    //   // Use patchValue para definir o valor do campo sem substituir outros valores
+    //   this.form.patchValue({
+    //     [atributo.field]: atributo.value
+    //   });
+    // });
+
   }
 
   onSubmit() {
@@ -35,7 +55,6 @@ export class CreateGenericComponent implements OnInit{
       this.submitted = false;
       const formData = this.form.value;
 
-      console.log('formData', formData)
       this.consultasService.create(formData, this.rota).subscribe(resp => {
         this.formularioEnviado.emit(formData);
         this.form.reset();

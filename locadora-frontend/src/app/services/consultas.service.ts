@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Input } from '@angular/core';
 import { map } from 'rxjs';
-import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +22,12 @@ export class ConsultasService {
     return this.http.post(`${this.API}` + rota, obj);
   }
 
-  getById(){}
+  getById(id: number, rota: string){
+    return this.http.get(`${this.API}${rota}/${id}`).pipe(map((res: any) => {
+      return res;
+    }));
+
+  }
 
   delete(id: number, rota: string){
     return this.http.delete(`${this.API}${rota}/${id}`);

@@ -80,34 +80,46 @@ export class CadastrosComponent implements OnInit{
   }
 
   processarFormulario(event: any){
-    let item
-    if(this.results && this.results.length){
+    let item;
+    if(this.results && this.results.length > 0){
       item = this.results.filter(x => event.id == event.id);
     }
+
     if(!item){
 
     }
+
     this.results.push(event);
     this.openDialog = false;
+    this.idEntidade = 0;
   }
 
   deletarEntidade(entity: any){
-    for (const key in entity) {
-      if (key.startsWith('id')) {
-        const idValue = entity[key];
-        this.consultasService.delete(idValue, this.rota).subscribe(resp => {
-          this.results = this.results.filter(x => x.id != entity.id);
-
-        });
-      }
-    }
-
-
+    var idValue = this.getIdEntidade(entity);
+    this.consultasService.delete(idValue, this.rota + '/excluir').subscribe(resp => {
+      this.results = this.results.filter(x => x.id != entity.id);
+    });
 
   }
 
+  getIdEntidade(entity: any): any{
+    for (const key in entity) {
+      if (key.startsWith('id')) {
+        const idValue = entity[key];
+        return idValue;
+      }
+    }
+
+    return null;
+  }
+
   editarEntidade(entity: any){
-    this.idEntidade = entity.id;
+    this.idEntidade = this.getIdEntidade(entity);
     this.openDialog = true;
+  }
+
+  openModal(){
+    this.openDialog = true;
+    this.idEntidade = 0;
   }
 }
