@@ -1,6 +1,7 @@
 import { ConsultasService } from '../../services/consultas.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'cadastros',
@@ -19,12 +20,11 @@ export class CadastrosComponent implements OnInit{
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private consultasService: ConsultasService
+              private consultasService: ConsultasService,
+              private confirmationService: ConfirmationService
     ) { }
 
   ngOnInit(): void {
-    //etste
-    //tujjjhjghghghhhhyygg
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.route.params.subscribe(params => {
       this.nomeEntidade = params['tipo'];
@@ -73,7 +73,7 @@ export class CadastrosComponent implements OnInit{
         cols = [
           { field: 'nome', header: 'Nome', type: 'text'},
           { field: 'valor', header: 'Valor', type: 'number' },
-          { field: 'prazoDevolucao', header: 'Prazo de Devolução', type: 'date' },
+          { field: 'prazoDevolucao', header: 'Prazo de Devolução', type: 'number' },
         ];
         break;
     }
@@ -81,23 +81,54 @@ export class CadastrosComponent implements OnInit{
     return cols;
   }
 
+  setEntidade(entity: any, newEntity: any) {
+    for (const key in entity) {
+      if (newEntity.hasOwnProperty(key)) {
+        entity[key] = newEntity[key];
+      }
+    }
+  }
+
   processarFormulario(event: any){
     let item;
     if(this.results && this.results.length > 0){
-      item = this.results.filter(x => event.id == event.id);
+      for (const key in event) {
+        if (key.startsWith('id')) {
+          item = this.results.filter(x => x[key] == event[key])[0];
+          // const index = this.results.indexOf(item);
+        }
+      }
     }
 
     if(!item){
-
+      this.results.push(event);
+    }else{
+      console.log('new')
+      this.setEntidade(item, event);
     }
 
-    this.results.push(event);
     this.openDialog = false;
     this.idEntidade = 0;
   }
 
+  showConfirmationToDelete(entity: any): void {
+    console.log('veiooo aquiii')
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja excluir esta entidade?',
+      accept: () => {
+        // O código que será executado quando o usuário confirmar a exclusão
+        this.deletarEntidade(entity);
+      },
+      reject: () => {
+        // O código que será executado quando o usuário cancelar a exclusão (opcional)
+      }
+    });
+  }
+
   deletarEntidade(entity: any){
     var idValue = this.getIdEntidade(entity);
+    this.rota = this.getRota(this.nomeEntidade);
+    
     this.consultasService.delete(idValue, this.rota + '/excluir').subscribe(resp => {
       this.setResults(entity);
     });
@@ -124,11 +155,16 @@ export class CadastrosComponent implements OnInit{
 
   editarEntidade(entity: any){
     this.idEntidade = this.getIdEntidade(entity);
+    this.rota = this.getRota(this.nomeEntidade);
+    console.log('rota', this.rota)
     this.openDialog = true;
   }
 
   openModal(){
-    this.openDialog = true;
+    this.rota = this.getRota(this.nomeEntidade) + '/adicionar';
     this.idEntidade = 0;
+    this.openDialog = true;
   }
+
+
 }

@@ -20,7 +20,7 @@ public class ClasseService  {
 
         Classe classe = new Classe();
         classe.setNome(classeDTO.getNome());
-        classe.setPrazoDevolucao(classe.getPrazoDevolucao());
+        classe.setPrazoDevolucao(classeDTO.getPrazoDevolucao());
         classe.setValor(classeDTO.getValor());
 
         return classeRepository.save(classe);
@@ -31,6 +31,8 @@ public class ClasseService  {
 
         if(classeEncontrada != null){
             classeEncontrada.setNome((classeParametro.getNome()));
+            classeEncontrada.setPrazoDevolucao(classeParametro.getPrazoDevolucao());
+            classeEncontrada.setValor(classeParametro.getValor());
         }
 
         return classeRepository.save(classeEncontrada);

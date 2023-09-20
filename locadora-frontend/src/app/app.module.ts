@@ -17,7 +17,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { HttpClientModule } from '@angular/common/http';
 import { ConsultasService } from './services/consultas.service';
-
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,10 +40,13 @@ import { ConsultasService } from './services/consultas.service';
     FormsModule,
     ReactiveFormsModule,
     InputNumberModule,
-    HttpClientModule
+    HttpClientModule,
+    ConfirmDialogModule
 
   ],
-  providers: [ConsultasService],
+  providers: [
+    ConsultasService,
+    ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

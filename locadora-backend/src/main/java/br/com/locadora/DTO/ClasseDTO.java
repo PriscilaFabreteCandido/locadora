@@ -11,6 +11,5 @@ public class ClasseDTO {
     private String nome;
     private float valor;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date prazoDevolucao;
+    private int prazoDevolucao;
 }

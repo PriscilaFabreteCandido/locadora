@@ -33,8 +33,8 @@ export class ConsultasService {
     return this.http.delete(`${this.API}${rota}/${id}`);
   }
 
-  update(obj: any, rota: string){
-    return this.http.put(`${this.API}` + rota, obj).pipe(map((res: any) => {
+  update(obj: any, rota: string, id: number){
+    return this.http.put(`${this.API}${rota}/${id}`, obj).pipe(map((res: any) => {
       return res;
     }));
   }

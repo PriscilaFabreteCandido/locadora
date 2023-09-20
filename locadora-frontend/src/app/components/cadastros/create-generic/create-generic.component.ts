@@ -28,14 +28,25 @@ export class CreateGenericComponent implements OnInit{
       this.form.addControl(atributo.field, this.fb.control(null, Validators.required));
     });
 
-    if(!this.idEntidade || this.idEntidade > 0){
+    if(this.idEntidade > 0){
       this.getById();
     }
 
   }
 
+  getIdEntidade(entity: any): any{
+    for (const key in entity) {
+      if (key.startsWith('id')) {
+        const idValue = entity[key];
+        return idValue;
+      }
+    }
+
+    return null;
+  }
+
   getById(){
-    this.consultasService.getById(this.idEntidade, this.rota + '/editar').subscribe(resp => {
+    this.consultasService.getById(this.idEntidade, this.rota).subscribe(resp => {
       if(resp){
         let obj = resp;
         this.preencherForm(obj);
@@ -43,13 +54,20 @@ export class CreateGenericComponent implements OnInit{
     });
   }
 
-  preencherForm(obj: any){
-    // obj.forEach((atributo) => {
-    //   // Use patchValue para definir o valor do campo sem substituir outros valores
-    //   this.form.patchValue({
-    //     [atributo.field]: atributo.value
-    //   });
-    // });
+  preencherForm(entity: any){
+
+    this.atributos.forEach(atributo => {
+      for (const key in entity) {
+         if(key == atributo.field){
+          this.form.patchValue({
+            [atributo.field]: entity[key]
+          });
+         }
+      }
+
+    })
+
+
 
   }
 
@@ -59,12 +77,17 @@ export class CreateGenericComponent implements OnInit{
       const formData = this.form.value;
 
       if(!this.idEntidade || this.idEntidade <= 0){
+        console.log('formData', formData)
         this.consultasService.create(formData, this.rota).subscribe(resp => {
           this.formularioEnviado.emit(formData);
           this.form.reset();
         });
       }else{
-
+        console.log('formData', formData)
+        this.consultasService.update(formData, this.rota + '/editar', this.idEntidade).subscribe(resp => {
+          this.formularioEnviado.emit(resp);
+          this.form.reset();
+        });
       }
 
     } else {
