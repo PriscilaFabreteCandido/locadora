@@ -23,6 +23,7 @@ export class CadastrosComponent implements OnInit{
     ) { }
 
   ngOnInit(): void {
+    //etste
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.route.params.subscribe(params => {
       this.nomeEntidade = params['tipo'];
