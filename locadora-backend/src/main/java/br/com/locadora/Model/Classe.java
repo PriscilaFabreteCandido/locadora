@@ -18,5 +18,5 @@ public class Classe {
     private float valor;
 
     @Column(name = "prazoDevolucao")
-    private Date prazoDevolucao;
+    private int prazoDevolucao;
 }
