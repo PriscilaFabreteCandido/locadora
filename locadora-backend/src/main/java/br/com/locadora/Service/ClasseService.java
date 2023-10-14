@@ -3,22 +3,23 @@ package br.com.locadora.Service;
 import br.com.locadora.DTO.ClasseDTO;
 import br.com.locadora.Model.Classe;
 import br.com.locadora.Repository.ClasseRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ClasseService  {
+    
+    private final ClasseRepository classeRepository;
 
-    @Autowired
-    private ClasseRepository classeRepository;
-
-    public Classe inserir(ClasseDTO classeDTO){
-        if(classeDTO == null){
-            throw new IllegalArgumentException("Classe vazia");
-        }
-
+    public Classe create(ClasseDTO classeDTO){
         Classe classe = new Classe();
+        
         classe.setNome(classeDTO.getNome());
         classe.setPrazoDevolucao(classeDTO.getPrazoDevolucao());
         classe.setValor(classeDTO.getValor());
@@ -26,24 +27,24 @@ public class ClasseService  {
         return classeRepository.save(classe);
     }
 
-    public Classe atualizar(ClasseDTO classeParametro, Long id){
+    public Classe update(ClasseDTO classeDTO, Long id){
         Classe classeEncontrada = findById(id);
 
-        if(classeEncontrada != null){
-            classeEncontrada.setNome((classeParametro.getNome()));
-            classeEncontrada.setPrazoDevolucao(classeParametro.getPrazoDevolucao());
-            classeEncontrada.setValor(classeParametro.getValor());
-        }
+        classeEncontrada.setNome((classeDTO.getNome()));
+        classeEncontrada.setValor(classeDTO.getValor());
+        classeEncontrada.setPrazoDevolucao(classeDTO.getPrazoDevolucao());
 
         return classeRepository.save(classeEncontrada);
     }
 
-    public void excluir(Long id){
-        classeRepository.deleteById(id);
+    public void delete(Long id){
+        Classe classeEncontrada = findById(id);
+
+        classeRepository.delete(classeEncontrada);
     }
 
     public Classe findById(Long id){
-        return classeRepository.findById(id).orElse(null);
+    return classeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Classe não encontrada."));
     }
 
     public List<Classe> findAll(){

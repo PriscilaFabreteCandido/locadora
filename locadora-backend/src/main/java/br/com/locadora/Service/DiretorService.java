@@ -3,43 +3,44 @@ package br.com.locadora.Service;
 import br.com.locadora.DTO.DiretorDTO;
 import br.com.locadora.Model.Diretor;
 import br.com.locadora.Repository.DiretorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DiretorService {
+    
+    private final DiretorRepository diretorRepository;
 
-    @Autowired
-    private DiretorRepository diretorRepository;
-
-    public Diretor inserir(DiretorDTO diretorDTO){
-        if(diretorDTO == null){
-            throw new IllegalArgumentException("Classe vazia");
-        }
-
+    public Diretor create(DiretorDTO diretorDTO){
         Diretor diretor = new Diretor();
+        
         diretor.setNome(diretorDTO.getNome());
 
         return diretorRepository.save(diretor);
     }
 
-    public Diretor atualizar(DiretorDTO diretorParametro, Long id){
+    public Diretor update(DiretorDTO diretorDTO, Long id){
         Diretor diretorEncontrado = findById(id);
 
-        if(diretorEncontrado != null){
-            diretorEncontrado.setNome((diretorParametro.getNome()));
-        }
-
+        diretorEncontrado.setNome((diretorDTO.getNome()));
+        
         return diretorRepository.save(diretorEncontrado);
     }
 
-    public void excluir(Long id){
-        diretorRepository.deleteById(id);
+    public void delete(Long id){
+        Diretor diretorEncontrado = findById(id);
+
+        diretorRepository.delete(diretorEncontrado);
     }
 
     public Diretor findById(Long id){
-        return diretorRepository.findById(id).orElse(null);
+        return diretorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Diretor não encontrado."));
     }
 
     public List<Diretor> findAll(){

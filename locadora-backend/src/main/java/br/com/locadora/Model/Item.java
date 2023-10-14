@@ -1,4 +1,5 @@
 package br.com.locadora.Model;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.Date;
@@ -18,5 +19,11 @@ public class Item {
 
     @Column(name = "tipoItem")
     private String tipoItem;
+
+    @ManyToOne
+    @JoinColumn(name = "id_titulo")
+    @JsonIgnoreProperties("listaTitulos")
+    private Titulo titulo;
+    
 
 }

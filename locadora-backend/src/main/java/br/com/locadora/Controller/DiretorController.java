@@ -3,43 +3,52 @@ package br.com.locadora.Controller;
 import br.com.locadora.DTO.DiretorDTO;
 import br.com.locadora.Model.Diretor;
 import br.com.locadora.Service.DiretorService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/diretores")
 public class DiretorController {
-
-    @Autowired
-    private DiretorService diretorService;
+    
+    private final DiretorService diretorService;
 
     @GetMapping
-    public List<Diretor> listarDiretores(){
-        return diretorService.findAll();
+    public ResponseEntity<List<Diretor>> getAllDiretores(){
+        List<Diretor> listaDiretores = diretorService.findAll();
+        return new ResponseEntity<>(listaDiretores, listaDiretores.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public Diretor listarDiretor(@PathVariable Long id){
-        return diretorService.findById(id);
+    public ResponseEntity<Diretor> getDiretorById(@PathVariable Long id){
+        Diretor diretor = diretorService.findById(id);
+        return new ResponseEntity<>(diretor, HttpStatus.OK);
     }
 
     @PostMapping("/adicionar")
     @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
-    public Diretor cadastrarDiretor(@RequestBody DiretorDTO novoDiretor){
-        return diretorService.inserir(novoDiretor);
+    public ResponseEntity<Diretor> cadastrarDiretor(@RequestBody @Valid DiretorDTO diretorDTO){
+        Diretor diretor = diretorService.create(diretorDTO);
+        return new ResponseEntity<>(diretor, HttpStatus.CREATED);
     }
 
     @PutMapping("/editar/{id}")
     @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
-    public Diretor atualizarDiretor(@RequestBody DiretorDTO diretor, @PathVariable Long id){
-        return diretorService.atualizar(diretor, id);
+    public ResponseEntity<Diretor> atualizarDiretor(@RequestBody @Valid DiretorDTO diretorDTO, @PathVariable Long id){
+        Diretor diretorAtualizado = diretorService.update(diretorDTO, id);
+        return new ResponseEntity<>(diretorAtualizado, HttpStatus.OK);
     }
 
     @DeleteMapping("/excluir/{id}")
-    public void excluirDiretor(@PathVariable Long id){
-        diretorService.excluir(id);
+    public ResponseEntity<Diretor> excluirDiretor(@PathVariable Long id){
+        diretorService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
+    
 }

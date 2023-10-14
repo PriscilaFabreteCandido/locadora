@@ -1,15 +1,23 @@
 package br.com.locadora.DTO;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Date;
-
-@Data
+@Getter
+@Setter
 public class ClasseDTO {
-    private Long id_classe;
-    private String nome;
-    private float valor;
 
+    private Long id_classe;
+
+    @NotNull
+    @NotEmpty(message = "O nome da classe não pode ser vazio.")
+    private String nome;
+    
+    private float valor;
+    
     private int prazoDevolucao;
+    
 }
