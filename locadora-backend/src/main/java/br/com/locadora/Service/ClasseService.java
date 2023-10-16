@@ -5,10 +5,7 @@ import br.com.locadora.Model.Classe;
 import br.com.locadora.Repository.ClasseRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
 
 @Service

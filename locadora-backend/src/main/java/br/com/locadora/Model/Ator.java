@@ -1,16 +1,12 @@
 package br.com.locadora.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import java.util.List;
 
+@Data
 @Entity
-@Getter @Setter
 public class Ator {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

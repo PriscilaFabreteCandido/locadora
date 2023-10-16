@@ -1,13 +1,9 @@
 package br.com.locadora.DTO;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.*;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
 public class TituloDTO {
 
     private Long id_titulo;
@@ -21,6 +17,5 @@ public class TituloDTO {
     private String sinopse;
     
     private String categoria;
-    
 
 }

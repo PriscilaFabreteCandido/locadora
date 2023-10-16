@@ -1,13 +1,12 @@
 package br.com.locadora.Model;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Date;
 import java.util.List;
 
+@Data
 @Entity
-@Getter @Setter
 public class Classe {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

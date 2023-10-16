@@ -1,18 +1,11 @@
 package br.com.locadora.Service;
 
 import br.com.locadora.DTO.ItemDTO;
-import br.com.locadora.DTO.TituloDTO;
 import br.com.locadora.Model.Item;
-import br.com.locadora.Model.Titulo;
 import br.com.locadora.Repository.ItemRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.Date;
 import java.util.List;
 
 @Service

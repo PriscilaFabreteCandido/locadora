@@ -1,13 +1,9 @@
 package br.com.locadora.DTO;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.*;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
 public class ClasseDTO {
 
     private Long id_classe;
