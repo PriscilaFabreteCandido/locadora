@@ -77,9 +77,8 @@ export class CreateGenericComponent implements OnInit{
       const formData = this.form.value;
 
       if(!this.idEntidade || this.idEntidade <= 0){
-        console.log('formData', formData)
         this.consultasService.create(formData, this.rota).subscribe(resp => {
-          this.formularioEnviado.emit(formData);
+          this.formularioEnviado.emit(resp);
           this.form.reset();
         });
       }else{
