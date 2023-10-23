@@ -69,6 +69,13 @@ export class CadastrosComponent implements OnInit{
           { field: 'nome', header: 'Nome', type: 'text'},
         ];
         break;
+      case 'Classe':
+        cols = [
+          { field: 'nome', header: 'Nome', type: 'text'},
+          { field: 'valor', header: 'Valor', type: 'number' },
+          { field: 'prazoDevolucao', header: 'Prazo de Devolução', type: 'number' },
+        ];
+        break;
     }
 
     return cols;
@@ -121,7 +128,7 @@ export class CadastrosComponent implements OnInit{
   deletarEntidade(entity: any){
     var idValue = this.getIdEntidade(entity);
     this.rota = this.getRota(this.nomeEntidade);
-
+    
     this.consultasService.delete(idValue, this.rota + '/excluir').subscribe(resp => {
       this.setResults(entity);
     });
