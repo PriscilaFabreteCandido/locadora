@@ -1,11 +1,12 @@
 package br.com.locadora.Model;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.List;
 
-import java.util.Date;
-
+@Data
 @Entity
-@Getter @Setter
 public class Classe {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,4 +20,8 @@ public class Classe {
 
     @Column(name = "prazoDevolucao")
     private int prazoDevolucao;
+    
+    @OneToMany(mappedBy = "classe")
+    @JsonIgnoreProperties(value = "classe")
+    private List<Titulo> listaTitulos;
 }

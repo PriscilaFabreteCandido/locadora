@@ -3,44 +3,59 @@ package br.com.locadora.Controller;
 import br.com.locadora.DTO.ClasseDTO;
 import br.com.locadora.Model.Classe;
 import br.com.locadora.Service.ClasseService;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+@Tag(name = "ClasseController", description = "Fornece serviços REST para gerenciar informações de **classes** da locadora.")
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/classes")
 public class ClasseController {
-
-    @Autowired
-    private ClasseService classeService;
-
+    
+    private final ClasseService classeService;
+    
     @GetMapping
-    public List<Classe> listarClasses(){
-        return classeService.findAll();
+    @Operation(summary = "Retorna todos as classes cadastrados.")
+    public ResponseEntity<List<Classe>> getAllClasses(){
+        List<Classe> listaClasses = classeService.findAll();
+        return new ResponseEntity<>(listaClasses, listaClasses.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
     }
-
+    
     @GetMapping("/{id}")
-    public Classe listarClasse(@PathVariable Long id){
-        return classeService.findById(id);
+    @Operation(summary = "Retorna uma classe específica.")
+    public ResponseEntity<Classe> getClasseById(@PathVariable Long id){
+        Classe classe = classeService.findById(id);
+        return new ResponseEntity<>(classe, HttpStatus.OK);
     }
-
+    
     @PostMapping("/adicionar")
-    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
-    public Classe cadastrarClasse(@RequestBody ClasseDTO novaClasse){
-        return classeService.inserir(novaClasse);
+    @Operation(summary = "Adiciona uma nova classe.")
+    public ResponseEntity<Classe> cadastrarClasse(@RequestBody @Valid ClasseDTO classeDTO){
+        Classe classe = classeService.create(classeDTO);
+        
+        return new ResponseEntity<>(classe, HttpStatus.CREATED);
     }
-
+    
     @PutMapping("/editar/{id}")
-    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
-    public Classe atualizarClasse(@RequestBody ClasseDTO classe, @PathVariable Long id){
-        return classeService.atualizar(classe, id);
+    @Operation(summary = "Edita uma classe existente.")
+    public ResponseEntity<Classe> atualizarClasse(@RequestBody @Valid ClasseDTO classeDTO, @PathVariable Long id){
+        Classe classeAtualizada = classeService.update(classeDTO, id);
+        return new ResponseEntity<>(classeAtualizada, HttpStatus.OK);
     }
-
+    
     @DeleteMapping("/excluir/{id}")
-    public void excluirClasse(@PathVariable Long id){
-        classeService.excluir(id);
+    @Operation(summary = "Exclui uma classe existente.")
+    public ResponseEntity<Classe> excluirClasse(@PathVariable Long id){
+        classeService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-
+    
 }

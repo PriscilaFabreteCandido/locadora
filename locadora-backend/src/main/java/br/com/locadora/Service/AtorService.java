@@ -3,53 +3,42 @@ package br.com.locadora.Service;
 import br.com.locadora.DTO.AtorDTO;
 import br.com.locadora.Model.Ator;
 import br.com.locadora.Repository.AtorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
 
+
 @Service
+@RequiredArgsConstructor
 public class AtorService {
 
-    @Autowired
-    private AtorRepository atorRepository;
+    private final AtorRepository atorRepository;
 
-    public Ator inserir(AtorDTO atorDTO){
-        if(atorDTO.getNome() == null || atorDTO.getNome().isEmpty()){
-            throw new IllegalArgumentException("O nome do ator não pode estar vazio.");
-        }
+    public Ator create(AtorDTO atorDTO){
+        Ator novoAtor = new Ator();
+        
+        novoAtor.setNome(atorDTO.getNome());
 
-        Ator ator = new Ator();
-        ator.setNome(atorDTO.getNome());
-        return atorRepository.save(ator);
+        return atorRepository.save(novoAtor);
     }
 
-    public Ator atualizar(AtorDTO atorDTO, Long id){
+    public Ator update(AtorDTO atorDTO, Long id){
         Ator atorEncontrado = findById(id);
-
-        if(atorEncontrado == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ator não encontrado com o ID especificado.");
-        }
 
         atorEncontrado.setNome(atorDTO.getNome());
 
         return atorRepository.save(atorEncontrado);
     }
 
-    public void excluir(Long id){
+    public void delete(Long id){
         Ator atorEncontrado = findById(id);
 
-        if(atorEncontrado == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ator não encontrado com o ID especificado.");
-        }
-
-        atorRepository.deleteById(id);
+        atorRepository.delete(atorEncontrado);
     }
 
     public Ator findById(Long id){
-        return atorRepository.findById(id).orElse(null);
+        return atorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Ator não encontrado."));
     }
 
     public List<Ator> findAll(){
