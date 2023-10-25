@@ -15,6 +15,14 @@ export class CreateGenericComponent implements OnInit{
 
   public form:FormGroup;
   submitted: boolean = false;
+  atores: any;
+  itens: any;
+  diretores: any;
+  classes: any;
+  selectedAtores: any;
+  selectedItens: any;
+  selectedDiretor: any;
+  selectedClasse: any;
 
   constructor(private fb:FormBuilder,
               private consultasService: ConsultasService) {
@@ -65,10 +73,7 @@ export class CreateGenericComponent implements OnInit{
          }
       }
 
-    })
-
-
-
+    });
   }
 
   onSubmit() {
@@ -77,13 +82,11 @@ export class CreateGenericComponent implements OnInit{
       const formData = this.form.value;
 
       if(!this.idEntidade || this.idEntidade <= 0){
-        console.log('formData', formData)
         this.consultasService.create(formData, this.rota).subscribe(resp => {
-          this.formularioEnviado.emit(formData);
+          this.formularioEnviado.emit(resp);
           this.form.reset();
         });
       }else{
-        console.log('formData', formData)
         this.consultasService.update(formData, this.rota + '/editar', this.idEntidade).subscribe(resp => {
           this.formularioEnviado.emit(resp);
           this.form.reset();
@@ -93,5 +96,37 @@ export class CreateGenericComponent implements OnInit{
     } else {
       this.submitted = true;
     }
+  }
+
+  getAllAtores(){
+    this.consultasService.getAll('/atores').subscribe(resp => {
+      if(resp){
+        this.atores = resp;
+      }
+    });
+  }
+
+  getAllDiretores(){
+    this.consultasService.getAll('/diretores').subscribe(resp => {
+      if(resp){
+        this.diretores = resp;
+      }
+    });
+  }
+
+  getAllClasses(){
+    this.consultasService.getAll('/classes').subscribe(resp => {
+      if(resp){
+        this.classes = resp;
+      }
+    });
+  }
+
+  getAllItens(){
+    this.consultasService.getAll('/itens').subscribe(resp => {
+      if(resp){
+        this.itens = resp;
+      }
+    });
   }
 }

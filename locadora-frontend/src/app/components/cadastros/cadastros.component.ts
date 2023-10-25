@@ -49,8 +49,14 @@ export class CadastrosComponent implements OnInit{
         rota = '/diretores'
         break;
       case 'Classe':
-        rota = '/classes'
+        rota = '/classes';
         break;
+      case 'Item':
+          rota = '/itens';
+          break;
+      case 'Titulo':
+          rota = '/titulos';
+          break;
     }
 
     return rota;
@@ -74,6 +80,30 @@ export class CadastrosComponent implements OnInit{
           { field: 'nome', header: 'Nome', type: 'text'},
           { field: 'valor', header: 'Valor', type: 'number' },
           { field: 'prazoDevolucao', header: 'Prazo de Devolução', type: 'number' },
+        ];
+        break;
+      case 'Diretor':
+        cols = [
+          { field: 'nome', header: 'Nome', type: 'text'},
+        ];
+        break;
+      case 'Item':
+        cols = [
+          { field: 'numSerie', header: 'Número da Série', type: 'number'},
+          { field: 'dtAquisicao', header: 'Data de Aquisição', type: 'date' },
+          { field: 'tipoItem', header: 'Tipo Item', type: 'text' },
+        ];
+        break;
+      case 'Titulo':
+        cols = [
+          { field: 'nome', header: 'Nome', type: 'text'},
+          { field: 'categoria', header: 'Categoria', type: 'text' },
+          { field: 'sinopse', header: 'Sinopse', type: 'text' },
+          { field: 'ano', header: 'Ano', type: 'number' },
+          { field: 'atores', header: 'Atores', type: 'ator' },
+          { field: 'diretor', header: 'Diretor', type: 'diretor' },
+          { field: 'classe', header: 'Classe', type: 'classe' },
+          { field: 'itens', header: 'Itens', type: 'item' },
         ];
         break;
     }
@@ -103,7 +133,6 @@ export class CadastrosComponent implements OnInit{
     if(!item){
       this.results.push(event);
     }else{
-      console.log('new')
       this.setEntidade(item, event);
     }
 
@@ -112,7 +141,6 @@ export class CadastrosComponent implements OnInit{
   }
 
   showConfirmationToDelete(entity: any): void {
-    console.log('veiooo aquiii')
     this.confirmationService.confirm({
       message: 'Tem certeza que deseja excluir esta entidade?',
       accept: () => {
@@ -128,7 +156,7 @@ export class CadastrosComponent implements OnInit{
   deletarEntidade(entity: any){
     var idValue = this.getIdEntidade(entity);
     this.rota = this.getRota(this.nomeEntidade);
-    
+
     this.consultasService.delete(idValue, this.rota + '/excluir').subscribe(resp => {
       this.setResults(entity);
     });
@@ -156,7 +184,6 @@ export class CadastrosComponent implements OnInit{
   editarEntidade(entity: any){
     this.idEntidade = this.getIdEntidade(entity);
     this.rota = this.getRota(this.nomeEntidade);
-    console.log('rota', this.rota)
     this.openDialog = true;
   }
 

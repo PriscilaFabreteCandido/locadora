@@ -14,9 +14,14 @@
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr>
-          <td *ngFor="let col of columns">
-              {{ rowData[col.field] }}
-          </td>
+        <td *ngFor="let col of columns">
+          <ng-container *ngIf="col.type === 'date'; else noDatePipe">
+            {{ rowData[col.field] | date:'dd/MM/yyyy' }}
+          </ng-container>
+          <ng-template #noDatePipe>
+            {{ rowData[col.field] }}
+          </ng-template>
+        </td>
           <td >
             <p-button label="Editar" class="mr-1" styleClass="p-button-warning" (onClick)="editarEntidade(rowData)"></p-button>
             <p-button label="Excluir" styleClass="p-button-danger" (onClick)="showConfirmationToDelete(rowData)"></p-button>

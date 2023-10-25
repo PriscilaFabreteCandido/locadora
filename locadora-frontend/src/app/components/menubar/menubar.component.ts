@@ -39,6 +39,20 @@ export class MenubarComponent implements OnInit{
                   command: () => {
                     this.router.navigate(['/cadastros/Diretor']);
                 }
+              },
+              {
+                label: 'Item',
+                icon: 'pi pi-fw pi-external-link',
+                command: () => {
+                  this.router.navigate(['/cadastros/Item']);
+                },
+              },
+              {
+                label: 'Título',
+                icon: 'pi pi-fw pi-external-link',
+                command: () => {
+                  this.router.navigate(['/cadastros/Titulo']);
+                }
               }
           ]
       },
