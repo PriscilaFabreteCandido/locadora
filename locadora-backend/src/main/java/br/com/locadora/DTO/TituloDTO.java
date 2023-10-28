@@ -3,6 +3,8 @@ package br.com.locadora.DTO;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.util.List;
+
 @Data
 public class TituloDTO {
 
@@ -17,5 +19,9 @@ public class TituloDTO {
     private String sinopse;
     
     private String categoria;
+
+    private DiretorDTO diretor;
+    private ClasseDTO classe;
+    private List<AtorDTO> atores;
 
 }

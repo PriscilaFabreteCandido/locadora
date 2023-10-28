@@ -24,7 +24,7 @@
         @Column(name = "categoria")
         private String categoria;
 
-        @ManyToMany(mappedBy = "listaTitulos")
+        @ManyToMany(mappedBy = "listaTitulos", fetch = FetchType.EAGER)
         @JsonIgnoreProperties(value = "listaTitulos")
         private List<Ator> listaAtores;
 

@@ -19,6 +19,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ConsultasService } from './services/consultas.service';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DropdownModule } from 'primeng/dropdown';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +43,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     ReactiveFormsModule,
     InputNumberModule,
     HttpClientModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    MultiSelectModule,
+    DropdownModule
 
   ],
   providers: [

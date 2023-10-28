@@ -9,3 +9,16 @@
 .text-red-600{
   color: var(--red-600);
 }
+
+
+.form-group{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+
+:host ::ng-deep .p-multiselect, :host ::ng-deep .p-dropdown {
+  width: 100%;
+
+}

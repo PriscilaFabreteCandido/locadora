@@ -67,43 +67,43 @@ export class CadastrosComponent implements OnInit{
     switch(tipo){
       case 'Ator':
         cols = [
-          { field: 'nome', header: 'Nome', type: 'text' },
+          { field: 'nome', header: 'Nome', type: 'text'  , isShow: true},
         ];
         break;
       case 'Diretor':
         cols = [
-          { field: 'nome', header: 'Nome', type: 'text'},
+          { field: 'nome', header: 'Nome', type: 'text' , isShow: true},
         ];
         break;
       case 'Classe':
         cols = [
-          { field: 'nome', header: 'Nome', type: 'text'},
-          { field: 'valor', header: 'Valor', type: 'number' },
-          { field: 'prazoDevolucao', header: 'Prazo de Devolução', type: 'number' },
+          { field: 'nome', header: 'Nome', type: 'text' , isShow: true},
+          { field: 'valor', header: 'Valor', type: 'number'  , isShow: true},
+          { field: 'prazoDevolucao', header: 'Prazo de Devolução', type: 'number'  , isShow: true},
         ];
         break;
       case 'Diretor':
         cols = [
-          { field: 'nome', header: 'Nome', type: 'text'},
+          { field: 'nome', header: 'Nome', type: 'text' , isShow: true},
         ];
         break;
       case 'Item':
         cols = [
-          { field: 'numSerie', header: 'Número da Série', type: 'number'},
-          { field: 'dtAquisicao', header: 'Data de Aquisição', type: 'date' },
-          { field: 'tipoItem', header: 'Tipo Item', type: 'text' },
+          { field: 'numSerie', header: 'Número da Série', type: 'number', isShow: true},
+          { field: 'titulo', header: 'Título', type: 'titulo', isShow: false},
+          { field: 'dtAquisicao', header: 'Data de Aquisição', type: 'date'  , isShow: true},
+          { field: 'tipoItem', header: 'Tipo Item', type: 'text', isShow: true},
         ];
         break;
       case 'Titulo':
         cols = [
-          { field: 'nome', header: 'Nome', type: 'text'},
-          { field: 'categoria', header: 'Categoria', type: 'text' },
-          { field: 'sinopse', header: 'Sinopse', type: 'text' },
-          { field: 'ano', header: 'Ano', type: 'number' },
-          { field: 'atores', header: 'Atores', type: 'ator' },
-          { field: 'diretor', header: 'Diretor', type: 'diretor' },
-          { field: 'classe', header: 'Classe', type: 'classe' },
-          { field: 'itens', header: 'Itens', type: 'item' },
+          { field: 'nome', header: 'Nome', type: 'text', isShow: true},
+          { field: 'categoria', header: 'Categoria', type: 'text', isShow: true},
+          { field: 'sinopse', header: 'Sinopse', type: 'text', isShow: true},
+          { field: 'ano', header: 'Ano', type: 'number', isShow: true},
+          { field: 'atores', header: 'Atores', type: 'ator', isShow: false},
+          { field: 'diretor', header: 'Diretor', type: 'diretor', isShow: false},
+          { field: 'classe', header: 'Classe', type: 'classe', isShow: false},
         ];
         break;
     }

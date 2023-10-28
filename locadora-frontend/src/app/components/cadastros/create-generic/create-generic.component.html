@@ -1,6 +1,6 @@
 <form [formGroup]="form" class="mx-auto" novalidate>
   <div *ngFor="let atributo of atributos" class="mb-3">
-    <div class="form-group d-flex">
+    <div class="form-group ">
       <label for="{{ atributo.field }}" class="flex-grow-1" style="margin-bottom: 0;">{{ atributo.header + ': '}}</label>
 
       <!-- Exibir campo de entrada de acordo com o tipo -->
@@ -13,6 +13,31 @@
 
         <input *ngSwitchCase="'date'" pInputText type="date" class="form-control flex-grow-1"
           formControlName="{{ atributo.field }}" id="{{ atributo.field }}" name="{{ atributo.field }}">
+
+        <ng-container *ngSwitchCase="'ator'">
+          <p-multiSelect [options]="atores" [(ngModel)]="selectedAtores" [placeholder]="idEntidade <= 0 ? 'Selecione os Atores' : ''" optionLabel="nome"
+          formControlName="{{ atributo.field }}" id="{{ atributo.field }}" name="{{ atributo.field }}"
+          ></p-multiSelect>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'titulo'">
+          <p-dropdown  [options]="titulos" [(ngModel)]="selectedTitulo" [placeholder]="idEntidade <= 0 ? 'Selecione um Título' : ''" optionLabel="nome"
+          formControlName="{{ atributo.field }}" id="{{ atributo.field }}" name="{{ atributo.field }}"
+          ></p-dropdown>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'classe'">
+          <p-dropdown [options]="classes" [(ngModel)]="selectedClasse" [placeholder]="idEntidade <= 0 ? 'Selecione uma Classe' : ''"  optionLabel="nome"
+          formControlName="{{ atributo.field }}" id="{{ atributo.field }}" name="{{ atributo.field }}"
+          ></p-dropdown>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'diretor'">
+          <p-dropdown [options]="diretores" [(ngModel)]="selectedDiretor" [placeholder]="idEntidade <= 0 ? 'Selecione um Diretor' : ''"  optionLabel="nome"
+          formControlName="{{ atributo.field }}" id="{{ atributo.field }}" name="{{ atributo.field }}"
+          ></p-dropdown>
+        </ng-container>
+
       </ng-container>
 
       <!-- Exibir mensagem de erro apenas após o envio do formulário -->

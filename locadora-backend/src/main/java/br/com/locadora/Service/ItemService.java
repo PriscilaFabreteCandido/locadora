@@ -2,6 +2,7 @@ package br.com.locadora.Service;
 
 import br.com.locadora.DTO.ItemDTO;
 import br.com.locadora.Model.Item;
+import br.com.locadora.Model.Titulo;
 import br.com.locadora.Repository.ItemRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,13 @@ public class ItemService {
         item.setNumSerie(itemDTO.getNumSerie());
         item.setDtAquisicao(itemDTO.getDtAquisicao());
         item.setTipoItem(itemDTO.getTipoItem());
-        
+
+        if(itemDTO.getTitulo() != null){
+            Titulo titulo = new Titulo();
+            titulo.setId_titulo(itemDTO.getTitulo().getId_titulo());
+            item.setTitulo(titulo);
+        }
+
         return itemRepository.save(item);
     }
     
@@ -30,7 +37,13 @@ public class ItemService {
         itemEncontrado.setNumSerie(itemDTO.getNumSerie());
         itemEncontrado.setDtAquisicao(itemDTO.getDtAquisicao());
         itemEncontrado.setTipoItem(itemDTO.getTipoItem());
-        
+
+        if(itemDTO.getTitulo() != null){
+            Titulo titulo = new Titulo();
+            titulo.setId_titulo(itemDTO.getTitulo().getId_titulo());
+            itemEncontrado.setTitulo(titulo);
+        }
+
         return itemRepository.save(itemEncontrado);
     }
     
