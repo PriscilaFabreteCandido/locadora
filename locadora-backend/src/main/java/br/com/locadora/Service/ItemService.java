@@ -31,7 +31,7 @@ public class ItemService {
     
     public Item update(ItemDTO itemDTO, Long id){
         Item itemEncontrado = findById(id);
-        BeanUtils.copyProperties(itemDTO, itemEncontrado);
+        BeanUtils.copyProperties(itemDTO, itemEncontrado, "id_item");
 
         if(itemDTO.getTitulo() != null){
             Titulo titulo = new Titulo();
