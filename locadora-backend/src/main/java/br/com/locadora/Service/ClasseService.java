@@ -5,6 +5,7 @@ import br.com.locadora.Model.Classe;
 import br.com.locadora.Repository.ClasseRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -16,20 +17,14 @@ public class ClasseService  {
 
     public Classe create(ClasseDTO classeDTO){
         Classe classe = new Classe();
-        
-        classe.setNome(classeDTO.getNome());
-        classe.setPrazoDevolucao(classeDTO.getPrazoDevolucao());
-        classe.setValor(classeDTO.getValor());
+        BeanUtils.copyProperties(classeDTO, classe);
 
         return classeRepository.save(classe);
     }
 
     public Classe update(ClasseDTO classeDTO, Long id){
         Classe classeEncontrada = findById(id);
-
-        classeEncontrada.setNome((classeDTO.getNome()));
-        classeEncontrada.setValor(classeDTO.getValor());
-        classeEncontrada.setPrazoDevolucao(classeDTO.getPrazoDevolucao());
+        BeanUtils.copyProperties(classeDTO, classeEncontrada, "id_classe");
 
         return classeRepository.save(classeEncontrada);
     }

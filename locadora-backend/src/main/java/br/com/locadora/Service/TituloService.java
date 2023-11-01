@@ -1,5 +1,6 @@
 package br.com.locadora.Service;
 
+import br.com.locadora.DTO.AtorDTO;
 import br.com.locadora.DTO.TituloDTO;
 import br.com.locadora.Model.Ator;
 import br.com.locadora.Model.Classe;
@@ -8,90 +9,79 @@ import br.com.locadora.Model.Titulo;
 import br.com.locadora.Repository.TituloRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TituloService {
     
     private final TituloRepository tituloRepository;
+    private final AtorService atorService;
 
     public Titulo create(TituloDTO tituloDTO){
         Titulo titulo = new Titulo();
-        
-        titulo.setNome(tituloDTO.getNome());
-        titulo.setAno(tituloDTO.getAno());
-        titulo.setCategoria(tituloDTO.getCategoria());
-        titulo.setSinopse(titulo.getSinopse());
+        BeanUtils.copyProperties(tituloDTO, titulo);
 
-        if(tituloDTO.getAtores() != null && tituloDTO.getAtores().size() > 0){
+        Diretor diretor = new Diretor();
+        BeanUtils.copyProperties(tituloDTO.getDiretor(), diretor);
+        titulo.setDiretor(diretor);
 
-            List<Ator> atores = new ArrayList<>();
+        Classe classe = new Classe();
+        BeanUtils.copyProperties(tituloDTO.getClasse(), classe);
+        titulo.setClasse(classe);
 
-            tituloDTO.getAtores().forEach( atorDTO -> {
-                Ator ator = new Ator();
-
-                if(atorDTO.getId_ator() > 0){
-                    ator.setId_ator(atorDTO.getId_ator());
-                    atores.add(ator);
-                }
-            });
-            System.out.println("AQUIIIIIII " + atores.size());
-            titulo.setListaAtores(atores);
+        List<Ator> listaAtores = new ArrayList<>();
+        for (AtorDTO atorDTO : tituloDTO.getListaAtores()) {
+            Ator ator = new Ator();
+            BeanUtils.copyProperties(atorDTO, ator);
+            listaAtores.add(ator);
         }
-
-        if(tituloDTO.getDiretor() != null){
-            Diretor diretor = new Diretor();
-            diretor.setId_diretor(tituloDTO.getDiretor().getId_diretor());
-            titulo.setDiretor(diretor);
-        }
-
-        if(tituloDTO.getClasse() != null){
-            Classe classe = new Classe();
-            classe.setId_classe(tituloDTO.getClasse().getId_classe());
-            titulo.setClasse(classe);
-        }
+        titulo.setListaAtores(listaAtores);
 
         return tituloRepository.save(titulo);
     }
 
-    public Titulo update(TituloDTO tituloDTO, Long id){
+    public Titulo update(TituloDTO tituloDTO, Long id) {
         Titulo tituloEncontrado = findById(id);
 
-        tituloEncontrado.setNome((tituloDTO.getNome()));
-        tituloEncontrado.setCategoria(tituloDTO.getCategoria());
-        tituloEncontrado.setAno(tituloDTO.getAno());
-        tituloEncontrado.setSinopse(tituloDTO.getSinopse());
+        BeanUtils.copyProperties(tituloDTO, tituloEncontrado, "id_titulo");
 
-        if(!tituloDTO.getAtores().isEmpty() && tituloDTO.getAtores().size() > 0){
-            List<Ator> atores = new ArrayList<>();
-
-            tituloDTO.getAtores().forEach( atorDTO -> {
-                Ator ator = new Ator();
-                ator.setId_ator(ator.getId_ator());
-                atores.add(ator);
-            });
-
-            tituloEncontrado.setListaAtores(atores);
-        }
-
-        if(tituloDTO.getDiretor() != null){
+        if (tituloDTO.getDiretor() != null) {
             Diretor diretor = new Diretor();
-            diretor.setId_diretor(tituloDTO.getDiretor().getId_diretor());
+            BeanUtils.copyProperties(tituloDTO.getDiretor(), diretor);
             tituloEncontrado.setDiretor(diretor);
         }
 
-        if(tituloDTO.getClasse() != null){
+        if (tituloDTO.getClasse() != null) {
             Classe classe = new Classe();
-            classe.setId_classe(tituloDTO.getClasse().getId_classe());
+            BeanUtils.copyProperties(tituloDTO.getClasse(), classe);
             tituloEncontrado.setClasse(classe);
+        }
+
+        if (tituloDTO.getListaAtores() != null) {
+            List<Ator> listaAtores = new ArrayList<>();
+            for (AtorDTO atorDTO : tituloDTO.getListaAtores()) {
+                Ator ator = new Ator();
+                BeanUtils.copyProperties(atorDTO, ator);
+                listaAtores.add(ator);
+            }
+            tituloEncontrado.setListaAtores(listaAtores);
         }
 
         return tituloRepository.save(tituloEncontrado);
     }
+
+
+
+
+
+
 
     public void delete(Long id){
         Titulo tituloEncontrado = findById(id);

@@ -5,6 +5,7 @@ import br.com.locadora.Model.Ator;
 import br.com.locadora.Repository.AtorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -17,16 +18,14 @@ public class AtorService {
 
     public Ator create(AtorDTO atorDTO){
         Ator novoAtor = new Ator();
-        
-        novoAtor.setNome(atorDTO.getNome());
+        BeanUtils.copyProperties(atorDTO, novoAtor);
 
         return atorRepository.save(novoAtor);
     }
 
     public Ator update(AtorDTO atorDTO, Long id){
         Ator atorEncontrado = findById(id);
-
-        atorEncontrado.setNome(atorDTO.getNome());
+        BeanUtils.copyProperties(atorDTO, atorEncontrado, "id_ator");
 
         return atorRepository.save(atorEncontrado);
     }

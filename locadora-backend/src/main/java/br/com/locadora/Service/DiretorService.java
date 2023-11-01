@@ -5,6 +5,7 @@ import br.com.locadora.Model.Diretor;
 import br.com.locadora.Repository.DiretorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -16,16 +17,14 @@ public class DiretorService {
 
     public Diretor create(DiretorDTO diretorDTO){
         Diretor diretor = new Diretor();
-        
-        diretor.setNome(diretorDTO.getNome());
+        BeanUtils.copyProperties(diretorDTO, diretor);
 
         return diretorRepository.save(diretor);
     }
 
     public Diretor update(DiretorDTO diretorDTO, Long id){
         Diretor diretorEncontrado = findById(id);
-
-        diretorEncontrado.setNome((diretorDTO.getNome()));
+        BeanUtils.copyProperties(diretorDTO, diretorEncontrado, "id_diretor");
         
         return diretorRepository.save(diretorEncontrado);
     }

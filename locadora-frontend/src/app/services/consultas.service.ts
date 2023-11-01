@@ -6,7 +6,7 @@ import { map } from 'rxjs';
   providedIn: 'root'
 })
 export class ConsultasService {
-  private readonly API = '/api';
+  private readonly API = 'http://localhost:8080/api';
   constructor(private http: HttpClient) {
   }
 

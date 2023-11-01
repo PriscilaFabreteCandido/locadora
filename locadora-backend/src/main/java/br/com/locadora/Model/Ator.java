@@ -15,13 +15,12 @@ public class Ator {
     @Column(name = "nome")
     private String nome;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "listaAtores")
     @JsonIgnoreProperties ("listaAtores")
-    @JoinTable(name = "ator_titulo",
-            joinColumns = @JoinColumn(name = "id_ator"),
-            inverseJoinColumns = @JoinColumn(name = "id_titulo"))
     private List<Titulo> listaTitulos;
 
 
-    
+
 }
+
+

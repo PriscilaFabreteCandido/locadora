@@ -1,8 +1,10 @@
 package br.com.locadora.DTO;
 
+import br.com.locadora.Model.Ator;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -21,7 +23,10 @@ public class TituloDTO {
     private String categoria;
 
     private DiretorDTO diretor;
+
     private ClasseDTO classe;
-    private List<AtorDTO> atores;
+
+    private List<AtorDTO> listaAtores = new ArrayList<>();
+
 
 }

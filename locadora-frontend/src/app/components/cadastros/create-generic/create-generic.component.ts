@@ -105,24 +105,31 @@ export class CreateGenericComponent implements OnInit{
       this.submitted = false;
       const formData = this.form.value;
 
+      // Verifique se há atores selecionados
+      if (this.selectedAtores && this.selectedAtores.length > 0) {
+        // Extraia os objetos AtorDTO dos atores selecionados
+        formData.listaAtores = this.selectedAtores;
+      } else {
+        // Se nenhum ator foi selecionado, defina listaAtores como uma lista vazia
+        formData.listaAtores = [];
+      }
 
-      console.log('formData', formData)
-      if(!this.idEntidade || this.idEntidade <= 0){
-        this.consultasService.create(formData, this.rota).subscribe(resp => {
+      if (!this.idEntidade || this.idEntidade <= 0) {
+        this.consultasService.create(formData, this.rota).subscribe((resp) => {
           this.formularioEnviado.emit(resp);
           this.form.reset();
         });
-      }else{
-        this.consultasService.update(formData, this.rota + '/editar', this.idEntidade).subscribe(resp => {
+      } else {
+        this.consultasService.update(formData, this.rota + '/editar', this.idEntidade).subscribe((resp) => {
           this.formularioEnviado.emit(resp);
           this.form.reset();
         });
       }
-
     } else {
       this.submitted = true;
     }
   }
+  
 
   getAllAtores(){
     this.consultasService.getAll('/atores').subscribe(resp => {

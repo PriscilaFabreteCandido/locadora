@@ -3,6 +3,8 @@
     import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
     import jakarta.persistence.*;
     import lombok.*;
+
+    import java.util.ArrayList;
     import java.util.List;
 
     @Data
@@ -24,9 +26,12 @@
         @Column(name = "categoria")
         private String categoria;
 
-        @ManyToMany(mappedBy = "listaTitulos", fetch = FetchType.EAGER)
+        @ManyToMany
+        @JoinTable(name = "ator_titulo",
+                joinColumns = @JoinColumn(name = "id_titulo"),
+                inverseJoinColumns = @JoinColumn(name = "id_ator"))
         @JsonIgnoreProperties(value = "listaTitulos")
-        private List<Ator> listaAtores;
+        private List<Ator> listaAtores = new ArrayList<>();
 
         @ManyToOne
         @JoinColumn(name = "id_diretor")
