@@ -13,6 +13,7 @@ public class ItemDTO {
     private Date dtAquisicao;
 
     private String tipoItem;
+
     private TituloDTO titulo;
 
 }

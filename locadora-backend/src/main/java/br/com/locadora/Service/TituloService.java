@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 public class TituloService {
     
     private final TituloRepository tituloRepository;
-    private final AtorService atorService;
 
     public Titulo create(TituloDTO tituloDTO){
         Titulo titulo = new Titulo();
@@ -76,11 +75,6 @@ public class TituloService {
 
         return tituloRepository.save(tituloEncontrado);
     }
-
-
-
-
-
 
 
     public void delete(Long id){
