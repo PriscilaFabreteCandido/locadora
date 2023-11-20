@@ -1,13 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ConsultasService } from 'src/app/services/consultas.service';
 
 @Component({
-  selector: 'create-generic',
-  templateUrl: './create-generic.component.html',
-  styleUrls: ['./create-generic.component.scss']
+  selector: 'app-add-locacao',
+  templateUrl: './add-locacao.component.html',
+  styleUrls: ['./add-locacao.component.scss']
 })
-export class CreateGenericComponent implements OnInit{
+export class AddLocacaoComponent {
   @Input() atributos: any[] = [];
   @Input() idEntidade: any;
   @Output() formularioEnviado = new EventEmitter<any>();
@@ -27,8 +27,6 @@ export class CreateGenericComponent implements OnInit{
   selectedDiretor: any;
   selectedClasse: any;
   selectedTitulo: any;
-  selectedSexo: any;
-  sexos: any[] = ['Feminino', 'Masculino']
 
   entidade: any;
 
@@ -57,13 +55,9 @@ export class CreateGenericComponent implements OnInit{
   getAllEntidades(){
     switch(this.nomeEntidade){
       case  'Titulo':
-        this.getAllAtores();
-        this.getAllClasses();
         this.getAllDiretores();
-        this.getAllItens();
         break;
       case 'Item':
-        this.getAllTitulos();
         break;
     }
   }
@@ -132,31 +126,6 @@ export class CreateGenericComponent implements OnInit{
     }
   }
 
-
-  getAllAtores(){
-    this.consultasService.getAll('/atores').subscribe(resp => {
-      if(resp){
-        this.atores = resp;
-
-        if (this.idEntidade > 0) {
-          const idsParaFiltrar: number[] = this.entidade.listaAtores.map((x: any) => x.id_ator); // Certifique-se de que 'id_ator' seja do tipo correto (por exemplo, number)
-          this.selectedAtores = this.atores.filter(ator => idsParaFiltrar.includes(ator.id_ator));
-
-          // this.atores.sort((d1, d2) => {
-          //   if (d1.nome === this.selectedAtores.nome) {
-          //       return -1; // selectedAtores vem antes
-          //   } else if (d2.nome === this.selectedAtores.nome) {
-          //       return 1; // selectedAtores vem depois
-          //   } else {
-          //       return d1.nome.localeCompare(d2.nome); // ordenar pelo nome
-          //   }
-          // });
-        }
-
-      }
-    });
-  }
-
   getAllDiretores(){
     this.consultasService.getAll('/diretores').subscribe(resp => {
       if(resp){
@@ -183,57 +152,6 @@ export class CreateGenericComponent implements OnInit{
     });
   }
 
-  getAllClasses(){
-    this.consultasService.getAll('/classes').subscribe(resp => {
-      if(resp){
-        this.classes = resp;
 
-        if (this.idEntidade > 0) {
-          this.selectedClasse = this.classes.filter(x => x.id_classe == this.entidade.classe.id_classe)[0];
-
-          this.classes.sort((d1, d2) => {
-            if (d1.nome === this.selectedClasse.nome) {
-                return -1;
-            } else if (d2.nome === this.selectedClasse.nome) {
-                return 1;
-            } else {
-                return d1.nome.localeCompare(d2.nome);
-            }
-          });
-        }
-      }
-    });
-  }
-
-  getAllItens(){
-    this.consultasService.getAll('/itens').subscribe(resp => {
-      if(resp){
-        this.itens = resp;
-        console.log('this.itens', this.itens)
-
-      }
-    });
-  }
-
-  getAllTitulos(){
-    this.consultasService.getAll('/titulos').subscribe(resp => {
-      if(resp){
-        this.titulos = resp;
-
-        if (this.idEntidade > 0) {
-          this.selectedTitulo = this.titulos.filter(x => x.id_classe == this.entidade.titulo.nome)[0];
-
-          this.classes.sort((d1, d2) => {
-            if (d1.nome === this.selectedTitulo.nome) {
-                return -1;
-            } else if (d2.nome === this.selectedTitulo.nome) {
-                return 1;
-            } else {
-                return d1.nome.localeCompare(d2.nome);
-            }
-          });
-        }
-      }
-    });
-  }
 }
+

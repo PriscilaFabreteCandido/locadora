@@ -17,44 +17,84 @@ export class MenubarComponent implements OnInit{
     this.items = [
       {
           label: 'Cadastros',
-          icon: 'pi pi-fw pi-file',
+          icon: 'pi pi-plus-circle',
           items: [
               {
                   label: 'Ator',
-                  icon: 'pi pi-fw pi-plus',
+                  icon: 'pi pi-android',
                   command: () => {
                     this.router.navigate(['/cadastros/Ator']);
                 }
               },
               {
                   label: 'Classe',
-                  icon: 'pi pi-fw pi-trash',
+                  icon: 'pi pi-briefcase',
                   command: () => {
                     this.router.navigate(['/cadastros/Classe']);
                 }
               },
               {
                   label: 'Diretor',
-                  icon: 'pi pi-fw pi-external-link',
+                  icon: 'pi pi-megaphone',
                   command: () => {
                     this.router.navigate(['/cadastros/Diretor']);
                 }
               },
               {
                 label: 'Item',
-                icon: 'pi pi-fw pi-external-link',
+                icon: 'pi pi-th-large',
                 command: () => {
                   this.router.navigate(['/cadastros/Item']);
                 },
               },
               {
                 label: 'Título',
-                icon: 'pi pi-fw pi-external-link',
+                icon: 'pi pi-file',
                 command: () => {
                   this.router.navigate(['/cadastros/Titulo']);
                 }
-              }
+              },
+              {
+                label: 'Cliente',
+                icon: 'pi pi-users',
+                command: () => {
+                  this.router.navigate(['/cadastros/Cliente']);
+                }
+              },
           ]
+      },
+      {
+        label: 'Locação',
+        icon: 'pi pi-sign-in',
+        items: [
+            {
+                label: 'Efetuar Locação',
+                icon: 'pi pi-shopping-cart',
+                command: () => {
+                  this.router.navigate(['/efetuarLocacao']);
+              }
+            },
+            {
+              label: 'Efetuar Devolução',
+              icon: 'pi pi-sign-out',
+              command: () => {
+                this.router.navigate(['/efetuarDevolucao']);
+            }
+          },
+        ]
+      },
+      {
+        label: 'Consultas',
+        icon: 'pi pi-search',
+        items: [
+            {
+                label: 'Titulo',
+                icon: 'pi pi-file',
+                command: () => {
+                  this.router.navigate(['/cadastros/Ator']);
+              }
+            },
+        ]
       },
     ];
 

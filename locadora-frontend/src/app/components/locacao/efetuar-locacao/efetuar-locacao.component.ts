@@ -1,14 +1,14 @@
-import { ConsultasService } from '../../services/consultas.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
+import { ConsultasService } from 'src/app/services/consultas.service';
 
 @Component({
-  selector: 'cadastros',
-  templateUrl: './cadastros.component.html',
-  styleUrls: ['./cadastros.component.scss']
+  selector: 'app-efetuar-locacao',
+  templateUrl: './efetuar-locacao.component.html',
+  styleUrls: ['./efetuar-locacao.component.scss']
 })
-export class CadastrosComponent implements OnInit{
+export class EfetuarLocacaoComponent {
   @Input() idCliente: number = 0;
   @Input() nomeEntidade: string = "";
 
@@ -20,26 +20,6 @@ export class CadastrosComponent implements OnInit{
   idEntidade: number = 0;
   rota: string = '';
   openDialogDependentes: boolean = false;
-  pessoas = [
-    {
-      nome: "João Silva",
-      endereco: "Rua A, 123",
-      telefone: "(11) 1234-5678",
-      sexo: "Masculino",
-      CPF: "123.456.789-00",
-      dataNascimento: "",
-      ativo: false
-    },
-    {
-      nome: "Maria Oliveira",
-      endereco: "Avenida B, 456",
-      telefone: "(22) 9876-5432",
-      sexo: "Feminino",
-      CPF: "987.654.321-00",
-      dataNascimento: "",
-      ativo: true
-    }
-  ];
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -60,13 +40,12 @@ export class CadastrosComponent implements OnInit{
     }
 
     this.cols = this.getColsByTipoEnt(this.nomeEntidade);
-    this.consultasService.getAll(this.rota).subscribe(resp => {
-      if(resp){
-        this.results = resp;
-      }
-    });
+    // this.consultasService.getAll(this.rota).subscribe(resp => {
+    //   if(resp){
+    //     this.results = resp;
+    //   }
+    // });
 
-    if(this.nomeEntidade == "Cliente") this.results = this.pessoas;
   }
 
   getRota(tipo: string): string{
@@ -141,14 +120,13 @@ export class CadastrosComponent implements OnInit{
         break;
       case 'Cliente':
         cols = [
-          { field: 'numInscricao', header: 'Número de Inscrição', type: 'text', isShow: true},
           { field: 'nome', header: 'Nome', type: 'text', isShow: true},
-          { field: 'dataNascimento', header: 'Data de Nascimento', type: 'date', isShow: false},
-          { field: 'sexo', header: 'Sexo', type: 'sexo', isShow: false},
-          { field: 'CPF', header: 'CPF', type: 'text', isShow: true},
           { field: 'endereco', header: 'Endereco', type: 'text', isShow: false},
           { field: 'telefone', header: 'Telefone', type: 'text', isShow: true},
-
+          { field: 'sexo', header: 'Sexo', type: 'sexo', isShow: true},
+          { field: 'CPF', header: 'CPF', type: 'sexo', isShow: true},
+          { field: 'dataNascimento', header: 'Data de Nascimento', type: 'date', isShow: true},
+          { field: 'ativo', header: 'Data de Nascimento', type: 'date', isShow: false}
         ];
         break;
     }
