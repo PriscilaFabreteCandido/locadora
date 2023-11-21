@@ -21,7 +21,7 @@ public class SocioService {
 
 	public Socio create(SocioDTO socioDTO){
 		Socio novoSocio = new Socio();
-
+		System.out.println("CPF SOCIO" + socioDTO.getCPF());
 		BeanUtils.copyProperties(socioDTO, novoSocio);
 
 		return socioRepository.save(novoSocio);
@@ -30,6 +30,7 @@ public class SocioService {
 	public Socio update(SocioDTO socioDTO, Long id){
 		Socio socioEncontrado = findById(id);
 		BeanUtils.copyProperties(socioDTO, socioEncontrado, "numInscricao");
+
 
 		if(!socioEncontrado.isEsta_ativo()){
 			for(Dependente dependente : socioEncontrado.getDependentes()){
@@ -40,6 +41,18 @@ public class SocioService {
 		return socioRepository.save(socioEncontrado);
 	}
 
+	public Socio ativarOrDesativarSocio(SocioDTO socioDTO, Long id){
+		Socio socioEncontrado = findById(id);
+
+		if(socioEncontrado !=  null){
+			socioEncontrado.setEsta_ativo(socioDTO.isEsta_ativo());
+			for(Dependente dependente : socioEncontrado.getDependentes()){
+				socioEncontrado.setEsta_ativo(socioDTO.isEsta_ativo());
+			}
+		}
+
+		return socioRepository.save(socioEncontrado);
+	}
 	public void delete(Long id){
 		Socio socioEncontrado = findById(id);
 

@@ -52,6 +52,13 @@ public class SocioController {
 		Socio socioAtualizado = socioService.update(socioDTO, id);
 		return new ResponseEntity<>(socioAtualizado, HttpStatus.OK);
 	}
+
+	@Operation(summary = "Ativa ou desativa um sócio.")
+	@PutMapping("/ativarOrDesativar/{id}")
+	public ResponseEntity<Socio> ativarOrDesativarSocio(@RequestBody @Valid SocioDTO socioDTO, @PathVariable Long id){
+		Socio socioAtualizado = socioService.ativarOrDesativarSocio(socioDTO, id);
+		return new ResponseEntity<>(socioAtualizado, HttpStatus.OK);
+	}
 	
 	@Operation(summary = "Exclui um sócio existente.")
 	@DeleteMapping("/excluir/{id}")
