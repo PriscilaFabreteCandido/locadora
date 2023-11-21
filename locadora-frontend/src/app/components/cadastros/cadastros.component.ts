@@ -145,7 +145,7 @@ export class CadastrosComponent implements OnInit{
           { field: 'nome', header: 'Nome', type: 'text', isShow: true, isShowForm: true},
           { field: 'dtNascimento', header: 'Data de Nascimento', type: 'date', isShow: false, isShowForm: true},
           { field: 'sexo', header: 'Sexo', type: 'sexo', isShow: false, isShowForm: true},
-          { field: 'CPF', header: 'CPF', type: 'text', isShow: false, isShowForm: true},
+          { field: 'cpf', header: 'CPF', type: 'text', isShow: false, isShowForm: true},
           { field: 'endereco', header: 'Endereco', type: 'text', isShow: true, isShowForm: true},
           { field: 'telefone', header: 'Telefone', type: 'text', isShow: true, isShowForm: true},
 
@@ -168,7 +168,7 @@ export class CadastrosComponent implements OnInit{
     let item;
     if(this.results && this.results.length > 0){
       for (const key in event) {
-        if (key.startsWith('id')) {
+        if ((key.startsWith('id') || this.nomeEntidade == "Cliente" && key.startsWith('numInscricao'))) {
           item = this.results.filter(x => x[key] == event[key])[0];
           // const index = this.results.indexOf(item);
         }
@@ -232,7 +232,8 @@ export class CadastrosComponent implements OnInit{
   }
 
   editarEntidade(entity: any){
-    this.idEntidade = this.getIdEntidade(entity);
+    this.nomeEntidade == 'Cliente' ? this.idEntidade = entity.numInscricao :  this.idEntidade = this.getIdEntidade(entity);
+    console.log('this.idEntidade', this.idEntidade, entity)
     this.rota = this.getRota(this.nomeEntidade);
     this.openDialog = true;
   }
@@ -248,7 +249,11 @@ export class CadastrosComponent implements OnInit{
   }
 
   ativarOrDesativarCliente(data: any){
-
+    let socio = {numInscricao: data.numInscricao, esta_ativo: !data.esta_ativo}
+    console.log('socio', socio)
+    this.consultasService.ativarOrDesativarSocio(socio, this.rota + '/ativarOrDesativar', data.numInscricao).subscribe(resp => {
+      this.processarFormulario(resp);
+    });
   }
 
   onSaveCadastros(event: any){
