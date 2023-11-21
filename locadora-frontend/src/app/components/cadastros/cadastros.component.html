@@ -1,5 +1,8 @@
 <div class="flex flex-row justify-between align-center">
-  <h1>{{nomeEntidade}}</h1>
+  <div class="flex flex-row" style="gap: 1rem;" >
+    <p-button *ngIf="showBtnLeft" (onClick)="onClickBtnLeft()" icon="pi pi-arrow-circle-left" class="left-btn"></p-button>
+    <h1>{{nomeEntidade}}</h1>
+  </div>
   <p-button label="Cadastrar" styleClass="p-button-success" (onClick)="openModal()"></p-button>
 </div>
 
@@ -25,9 +28,13 @@
           <p-button pTooltip="Excluir" icon="pi pi-trash" class="mr-1" styleClass="p-button-danger" (onClick)="showConfirmationToDelete(rowData)"></p-button>
 
           <ng-container *ngIf="nomeEntidade == 'Cliente'">
-            <p-button pTooltip="Gerenciar Dependentes" icon="pi pi-users" class="mr-1" styleClass="p-button-primary" (onClick)="gerenciarDependente(rowData.numInscricao)"></p-button>
-            <p-button [pTooltip]="rowData.esta_ativo ? 'Desativar Sócio' : 'Ativar Sócio'" [icon]="rowData.esta_ativo ? 'pi pi-lock-open' : 'pi pi-lock'" class="mr-1" styleClass="p-button-secondary" (onClick)="ativarOrDesativarCliente(rowData)"></p-button>
+            <p-button pTooltip="Gerenciar Dependentes" icon="pi pi-users" class="mr-1" styleClass="p-button-primary" (onClick)="gerenciarDependente(rowData)"></p-button>
+            <p-button [pTooltip]="rowData.esta_ativo ? 'Desativar Sócio' : 'Ativar Sócio'" [icon]="rowData.esta_ativo ? 'pi pi-lock-open' : 'pi pi-lock'" class="mr-1" styleClass="p-button-secondary" (onClick)="ativarOrDesativarSocio(rowData)"></p-button>
             <p-button pTooltip="Visualizar Cliente" icon="pi pi-info" class="mr-1" styleClass="p-button-help" (onClick)="showConfirmationToDelete(rowData)"></p-button>
+          </ng-container>
+
+          <ng-container *ngIf="nomeEntidade == 'Dependente'">
+            <p-button [pTooltip]="rowData.esta_ativo ? 'Desativar Dependente' : 'Ativar Dependente'" [icon]="rowData.esta_ativo ? 'pi pi-lock-open' : 'pi pi-lock'" class="mr-1" styleClass="p-button-secondary" (onClick)="ativarOrDesativarDependente(rowData)"></p-button>
           </ng-container>
         </td>
 
@@ -47,9 +54,9 @@
 </p-dialog>
 
 <p-dialog [header]="'Gerenciar Dependentes'" [(visible)]="openDialogDependentes" [responsive]="true"
-  [style]="{ 'width': '70vw', 'height': '60hw' }">
+  [style]="{ 'width': '80vw', 'min-height': '80hw' }">
   <ng-container *ngIf="openDialogDependentes">
-    <cadastros [nomeEntidade]="'Dependente'" (onSave)="onSaveCadastros($event)">
+    <cadastros [nomeEntidade]="'Dependente'" (onSave)="onSaveCadastros($event)" >
     </cadastros>
   </ng-container>
 </p-dialog>

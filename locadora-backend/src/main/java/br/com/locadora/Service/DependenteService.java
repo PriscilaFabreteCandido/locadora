@@ -90,4 +90,21 @@ public class DependenteService {
 	public List<Dependente> findAll() {
 		return dependenteRepository.findAll();
 	}
+
+	public Dependente ativarOrDesativar(DependenteDTO dependenteDTO, Long id) {
+		Socio socio = socioRepository.findById(dependenteDTO.getSocio().getNumInscricao())
+				.orElseThrow(() -> new EntityNotFoundException("Sócio não encontrado"));
+
+
+		if((!socio.isEsta_ativo()) && dependenteDTO.isEsta_ativo()){
+			throw new EntityNotFoundException("Dependente não pode ser ativado pq o sócio ta desativado");
+		}
+
+		Dependente dependenteEncontrado = findById(id);
+		if(dependenteDTO != null){
+			dependenteEncontrado.setEsta_ativo(dependenteDTO.isEsta_ativo());
+		}
+		return  dependenteEncontrado;
+	}
+
 }

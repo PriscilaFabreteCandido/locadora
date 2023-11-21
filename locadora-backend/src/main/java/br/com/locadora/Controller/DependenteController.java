@@ -1,7 +1,9 @@
 package br.com.locadora.Controller;
 
 import br.com.locadora.DTO.DependenteDTO;
+import br.com.locadora.DTO.SocioDTO;
 import br.com.locadora.Model.Dependente;
+import br.com.locadora.Model.Socio;
 import br.com.locadora.Service.DependenteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -55,5 +57,12 @@ public class DependenteController {
 	public ResponseEntity<Dependente> excluirDependente(@PathVariable Long id){
 		dependenteService.delete(id);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@Operation(summary = "Ativa ou desativa um dependente.")
+	@PutMapping("/ativarOrDesativar/{id}")
+	public ResponseEntity<Dependente> ativarOrDesativarSocio(@RequestBody @Valid DependenteDTO dependenteDTO, @PathVariable Long id){
+		Dependente result = dependenteService.ativarOrDesativar(dependenteDTO, id);
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 }

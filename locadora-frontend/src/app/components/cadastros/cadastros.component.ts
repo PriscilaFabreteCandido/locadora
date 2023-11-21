@@ -21,26 +21,8 @@ export class CadastrosComponent implements OnInit{
   idEntidade: number = 0;
   rota: string = '';
   openDialogDependentes: boolean = false;
-  pessoas = [
-    {
-      nome: "João Silva",
-      endereco: "Rua A, 123",
-      telefone: "(11) 1234-5678",
-      sexo: "Masculino",
-      CPF: "123.456.789-00",
-      dataNascimento: "",
-      ativo: false
-    },
-    {
-      nome: "Maria Oliveira",
-      endereco: "Avenida B, 456",
-      telefone: "(22) 9876-5432",
-      sexo: "Feminino",
-      CPF: "987.654.321-00",
-      dataNascimento: "",
-      ativo: true
-    }
-  ];
+  showBtnLeft = false;
+  idSocio: number = 0;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -56,16 +38,29 @@ export class CadastrosComponent implements OnInit{
     }else{
       this.route.params.subscribe(params => {
         this.nomeEntidade = params['tipo'];
+        if(params['idSocio'] && params['showBtnLeft']){
+          this.showBtnLeft = params['showBtnLeft'];
+          this.idSocio = params['idSocio'];
+        }
         this.rota = this.getRota(this.nomeEntidade);
       });
     }
 
     this.cols = this.getColsByTipoEnt(this.nomeEntidade);
-    this.consultasService.getAll(this.rota).subscribe(resp => {
-      if(resp){
-        this.results = resp;
-      }
-    });
+    if(this.nomeEntidade == 'Dependente'){
+      console.log('veio aqui')
+      this.consultasService.getById(this.idSocio, '/socios').subscribe(resp => {
+        if(resp){
+          this.results = resp.dependentes   ;
+        }
+      });
+    }else{
+      this.consultasService.getAll(this.rota).subscribe(resp => {
+        if(resp){
+          this.results = resp;
+        }
+      });
+    }
 
   }
 
@@ -90,6 +85,9 @@ export class CadastrosComponent implements OnInit{
       case 'Cliente':
         rota = '/socios';
         break;
+      case 'Dependente':
+          rota = '/dependentes';
+          break;
     }
 
     return rota;
@@ -151,6 +149,13 @@ export class CadastrosComponent implements OnInit{
 
         ];
         break;
+      case'Dependente':
+          cols = [
+            { field: 'nome', header: 'Nome', type: 'text', isShow: true, isShowForm: true},
+            { field: 'dtNascimento', header: 'Data de Nascimento', type: 'date', isShow: true, isShowForm: true},
+            { field: 'sexo', header: 'Sexo', type: 'sexo', isShow: true, isShowForm: true},
+          ];
+          break;
     }
 
     return cols;
@@ -168,7 +173,7 @@ export class CadastrosComponent implements OnInit{
     let item;
     if(this.results && this.results.length > 0){
       for (const key in event) {
-        if ((key.startsWith('id') || this.nomeEntidade == "Cliente" && key.startsWith('numInscricao'))) {
+        if ((key.startsWith('id') || (this.nomeEntidade == "Cliente" || this.nomeEntidade == "Dependente" )&& key.startsWith('numInscricao'))) {
           item = this.results.filter(x => x[key] == event[key])[0];
           // const index = this.results.indexOf(item);
         }
@@ -201,7 +206,7 @@ export class CadastrosComponent implements OnInit{
   deletarEntidade(entity: any){
 
     var idValue = this.getIdEntidade(entity);
-    this.nomeEntidade == "Cliente" ? idValue = entity.numInscricao : '';
+    this.nomeEntidade == "Cliente" || this.nomeEntidade == "Dependente" ? idValue = entity.numInscricao : '';
     console.log('entity', entity)
     this.rota = this.getRota(this.nomeEntidade);
 
@@ -214,7 +219,7 @@ export class CadastrosComponent implements OnInit{
     for (const key in entity) {
       if (key.startsWith('id')) {
         this.results = this.results.filter(x => x[key] != entity[key]);
-      } else if(this.nomeEntidade == "Cliente" && key.startsWith('numInscricao')){
+      } else if((this.nomeEntidade == "Cliente" || this.nomeEntidade == "Dependente") && key.startsWith('numInscricao')){
         this.results = this.results.filter(x => x[key] != entity[key]);
       }
     }
@@ -232,7 +237,7 @@ export class CadastrosComponent implements OnInit{
   }
 
   editarEntidade(entity: any){
-    this.nomeEntidade == 'Cliente' ? this.idEntidade = entity.numInscricao :  this.idEntidade = this.getIdEntidade(entity);
+    this.nomeEntidade == 'Cliente' || this.nomeEntidade == 'Dependente'  ? this.idEntidade = entity.numInscricao :  this.idEntidade = this.getIdEntidade(entity);
     console.log('this.idEntidade', this.idEntidade, entity)
     this.rota = this.getRota(this.nomeEntidade);
     this.openDialog = true;
@@ -245,10 +250,23 @@ export class CadastrosComponent implements OnInit{
   }
 
   gerenciarDependente(evnt: any){
-    this.openDialogDependentes = true;
+    // this.openDialogDependentes = true;
+    const tipo = 'Dependente'; // Substitua pelo valor real
+    const idSocio = evnt.numInscricao; // Substitua pelo valor real
+    console.log('tipo', tipo, 'idSocio', idSocio)
+    // Use o método navigate para navegar para a rota com parâmetros
+    this.router.navigate(['cadastros/dependentes', tipo, idSocio, true]);
   }
 
-  ativarOrDesativarCliente(data: any){
+  ativarOrDesativarDependente(data: any){
+    let dependente = {numInscricao: data.numInscricao, esta_ativo: !data.esta_ativo}
+    // console.log('socio', socio)
+    this.consultasService.ativarOrDesativarDependente(dependente, this.rota + '/ativarOrDesativar', data.numInscricao).subscribe(resp => {
+      this.processarFormulario(resp);
+    });
+  }
+
+  ativarOrDesativarSocio(data: any){
     let socio = {numInscricao: data.numInscricao, esta_ativo: !data.esta_ativo}
     console.log('socio', socio)
     this.consultasService.ativarOrDesativarSocio(socio, this.rota + '/ativarOrDesativar', data.numInscricao).subscribe(resp => {
@@ -258,5 +276,9 @@ export class CadastrosComponent implements OnInit{
 
   onSaveCadastros(event: any){
     console.log(event)
+  }
+
+  onClickBtnLeft(){
+    this.router.navigate(['cadastros', 'Cliente']);
   }
 }

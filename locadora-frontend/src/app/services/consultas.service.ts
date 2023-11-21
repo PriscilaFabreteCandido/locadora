@@ -57,6 +57,13 @@ export class ConsultasService {
       );
   }
 
+  ativarOrDesativarDependente(obj: any, rota: string, id: number){
+    return this.http.put(`${this.API}${rota}/${id}`, obj)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   private handleError(error: any): Observable<never> {
     let errorMessage = 'Ocorreu um erro no serviço.';
 

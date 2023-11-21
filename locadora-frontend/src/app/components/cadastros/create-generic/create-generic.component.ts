@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ConsultasService } from 'src/app/services/consultas.service';
 
 @Component({
@@ -14,6 +15,7 @@ export class CreateGenericComponent implements OnInit{
   @Input() rota: string = '';
   @Input() nomeEntidade: string = '';
 
+  idSocio: number = 0;
   public form:FormGroup;
   submitted: boolean = false;
   atores: any[] = [];
@@ -33,7 +35,9 @@ export class CreateGenericComponent implements OnInit{
   entidade: any;
 
   constructor(private fb:FormBuilder,
-              private consultasService: ConsultasService) {
+              private consultasService: ConsultasService,
+              private route: ActivatedRoute,
+              private router: Router,) {
       this.form = fb.group({});
   }
 
@@ -53,7 +57,11 @@ export class CreateGenericComponent implements OnInit{
       this.getAllEntidades();
     }
 
-    console.log('this.rota', this.rota)
+     this.route.params.subscribe(params => {
+        if(params['idSocio']){
+          this.idSocio = params['idSocio'];
+        }
+      });
 
   }
 
@@ -108,7 +116,7 @@ export class CreateGenericComponent implements OnInit{
   onSubmit() {
     if (this.form.valid) {
       this.submitted = false;
-      const formData = this.form.value;
+      var formData: any = this.form.value;
 
       // Verifique se há atores selecionados
       if (this.selectedAtores && this.selectedAtores.length > 0) {
@@ -117,6 +125,11 @@ export class CreateGenericComponent implements OnInit{
       } else {
         // Se nenhum ator foi selecionado, defina listaAtores como uma lista vazia
         formData.listaAtores = [];
+      }
+
+      if(this.nomeEntidade == 'Dependente'){
+        let socio = {numInscricao: this.idSocio};
+        formData.socio = socio;
       }
 
       if (!this.idEntidade || this.idEntidade <= 0) {
