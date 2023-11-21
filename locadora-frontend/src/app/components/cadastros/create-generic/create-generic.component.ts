@@ -41,7 +41,9 @@ export class CreateGenericComponent implements OnInit{
     this.form = this.fb.group({});
 
     this.atributos.forEach((atributo) => {
-      this.form.addControl(atributo.field, this.fb.control(null, Validators.required));
+      if(atributo.isShowForm){
+        this.form.addControl(atributo.field, this.fb.control(null, Validators.required));
+      }
     });
 
     if(this.idEntidade > 0){
@@ -51,6 +53,7 @@ export class CreateGenericComponent implements OnInit{
       this.getAllEntidades();
     }
 
+    console.log('this.rota', this.rota)
 
   }
 

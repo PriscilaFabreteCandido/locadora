@@ -16,14 +16,22 @@
   <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr>
         <ng-container *ngFor="let col of columns">
-          <td *ngIf="col.type === 'date'"> {{ rowData[col.field] | date:'dd/MM/yyyy' }}</td>
+          <td *ngIf="col.isShow && col.type === 'date'"> {{ rowData[col.field] | date:'dd/MM/yyyy' }}</td>
           <td *ngIf="col.isShow && col.type !== 'date'"> {{ rowData[col.field] }}</td>
         </ng-container>
 
         <td>
-          <p-button label="Editar" class="mr-1" styleClass="p-button-warning" (onClick)="editarEntidade(rowData)"></p-button>
-          <p-button label="Excluir" styleClass="p-button-danger" (onClick)="showConfirmationToDelete(rowData)"></p-button>
+          <p-button pTooltip="Editar" icon="pi pi-pencil" class="mr-1" styleClass="p-button-warning" (onClick)="editarEntidade(rowData)"></p-button>
+          <p-button pTooltip="Excluir" icon="pi pi-trash" class="mr-1" styleClass="p-button-danger" (onClick)="showConfirmationToDelete(rowData)"></p-button>
+
+          <ng-container *ngIf="nomeEntidade == 'Cliente'">
+            <p-button pTooltip="Gerenciar Dependentes" icon="pi pi-users" class="mr-1" styleClass="p-button-primary" (onClick)="gerenciarDependente(rowData.numInscricao)"></p-button>
+            <p-button [pTooltip]="rowData.esta_ativo ? 'Desativar Sócio' : 'Ativar Sócio'" [icon]="rowData.esta_ativo ? 'pi pi-lock-open' : 'pi pi-lock'" class="mr-1" styleClass="p-button-secondary" (onClick)="ativarOrDesativarCliente(rowData)"></p-button>
+            <p-button pTooltip="Visualizar Cliente" icon="pi pi-info" class="mr-1" styleClass="p-button-help" (onClick)="showConfirmationToDelete(rowData)"></p-button>
+          </ng-container>
         </td>
+
+
       </tr>
   </ng-template>
 </p-table>
@@ -38,3 +46,12 @@
   </ng-container>
 </p-dialog>
 
+<p-dialog [header]="'Gerenciar Dependentes'" [(visible)]="openDialogDependentes" [responsive]="true"
+  [style]="{ 'width': '70vw', 'height': '60hw' }">
+  <ng-container *ngIf="openDialogDependentes">
+    <cadastros [nomeEntidade]="'Dependente'" (onSave)="onSaveCadastros($event)">
+    </cadastros>
+  </ng-container>
+</p-dialog>
+
+<p-messages></p-messages>

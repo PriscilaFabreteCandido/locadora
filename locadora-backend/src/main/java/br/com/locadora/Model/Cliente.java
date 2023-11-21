@@ -24,7 +24,7 @@ public class Cliente {
 	private Date dtNascimento;
 	
 	@Column
-	private char sexo;
+	private String sexo;
 	
 	@Column
 	private boolean esta_ativo;

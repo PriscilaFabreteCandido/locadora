@@ -21,6 +21,8 @@ import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
+import { MessageService } from 'primeng/api';
+import { MessagesModule } from 'primeng/messages';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,12 +47,14 @@ import { DropdownModule } from 'primeng/dropdown';
     HttpClientModule,
     ConfirmDialogModule,
     MultiSelectModule,
-    DropdownModule
+    DropdownModule,
+    MessagesModule
 
   ],
   providers: [
     ConsultasService,
-    ConfirmationService],
+    ConfirmationService,
+    MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

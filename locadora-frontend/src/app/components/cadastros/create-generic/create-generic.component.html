@@ -1,6 +1,7 @@
 <form [formGroup]="form" class="mx-auto" novalidate>
-  <div *ngFor="let atributo of atributos" class="mb-3">
-    <div class="form-group ">
+  <div *ngFor="let atributo of atributos" class="">
+
+    <div class="form-group mb-3" *ngIf="atributo.isShowForm">
       <label for="{{ atributo.field }}" class="flex-grow-1" style="margin-bottom: 0;">{{ atributo.header + ': '}}</label>
 
       <!-- Exibir campo de entrada de acordo com o tipo -->
@@ -38,6 +39,11 @@
           ></p-dropdown>
         </ng-container>
 
+        <ng-container *ngSwitchCase="'sexo'">
+          <p-dropdown [options]="sexos" [(ngModel)]="selectedSexo" [placeholder]="idEntidade <= 0 ? 'Selecione um Sexo' : ''"
+          formControlName="{{ atributo.field }}" id="{{ atributo.field }}" name="{{ atributo.field }}"
+          ></p-dropdown>
+        </ng-container>
       </ng-container>
 
       <!-- Exibir mensagem de erro apenas após o envio do formulário -->

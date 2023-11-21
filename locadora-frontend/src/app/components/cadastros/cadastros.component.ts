@@ -1,5 +1,5 @@
 import { ConsultasService } from '../../services/consultas.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 
@@ -11,6 +11,7 @@ import { ConfirmationService } from 'primeng/api';
 export class CadastrosComponent implements OnInit{
   @Input() idCliente: number = 0;
   @Input() nomeEntidade: string = "";
+  @Output() onSave = new EventEmitter<any>();
 
   cols: any[] = [];
   results: any[] = [];
@@ -66,7 +67,6 @@ export class CadastrosComponent implements OnInit{
       }
     });
 
-    if(this.nomeEntidade == "Cliente") this.results = this.pessoas;
   }
 
   getRota(tipo: string): string{
@@ -88,7 +88,7 @@ export class CadastrosComponent implements OnInit{
           rota = '/titulos';
           break;
       case 'Cliente':
-        rota = '/clientes';
+        rota = '/socios';
         break;
     }
 
@@ -100,54 +100,54 @@ export class CadastrosComponent implements OnInit{
     switch(tipo){
       case 'Ator':
         cols = [
-          { field: 'nome', header: 'Nome', type: 'text'  , isShow: true},
+          { field: 'nome', header: 'Nome', type: 'text'  , isShow: true, isShowForm: true},
         ];
         break;
       case 'Diretor':
         cols = [
-          { field: 'nome', header: 'Nome', type: 'text' , isShow: true},
+          { field: 'nome', header: 'Nome', type: 'text' , isShow: true, isShowForm: true},
         ];
         break;
       case 'Classe':
         cols = [
-          { field: 'nome', header: 'Nome', type: 'text' , isShow: true},
-          { field: 'valor', header: 'Valor', type: 'number'  , isShow: true},
-          { field: 'prazoDevolucao', header: 'Prazo de Devolução', type: 'number'  , isShow: true},
+          { field: 'nome', header: 'Nome', type: 'text' , isShow: true, isShowForm: true},
+          { field: 'valor', header: 'Valor', type: 'number'  , isShow: true, isShowForm: true},
+          { field: 'prazoDevolucao', header: 'Prazo de Devolução', type: 'number'  , isShow: true, isShowForm: true},
         ];
         break;
       case 'Diretor':
         cols = [
-          { field: 'nome', header: 'Nome', type: 'text' , isShow: true},
+          { field: 'nome', header: 'Nome', type: 'text' , isShow: true, isShowForm: true},
         ];
         break;
       case 'Item':
         cols = [
-          { field: 'numSerie', header: 'Número da Série', type: 'number', isShow: true},
-          { field: 'titulo', header: 'Título', type: 'titulo', isShow: false},
-          { field: 'dtAquisicao', header: 'Data de Aquisição', type: 'date'  , isShow: true},
-          { field: 'tipoItem', header: 'Tipo Item', type: 'text', isShow: true},
+          { field: 'numSerie', header: 'Número da Série', type: 'number', isShow: true, isShowForm: true},
+          { field: 'titulo', header: 'Título', type: 'titulo', isShow: false, isShowForm: true},
+          { field: 'dtAquisicao', header: 'Data de Aquisição', type: 'date'  , isShow: true, isShowForm: true},
+          { field: 'tipoItem', header: 'Tipo Item', type: 'text', isShow: true, isShowForm: true},
         ];
         break;
       case 'Titulo':
         cols = [
-          { field: 'nome', header: 'Nome', type: 'text', isShow: true},
-          { field: 'categoria', header: 'Categoria', type: 'text', isShow: true},
-          { field: 'sinopse', header: 'Sinopse', type: 'text', isShow: true},
-          { field: 'ano', header: 'Ano', type: 'number', isShow: true},
-          { field: 'atores', header: 'Atores', type: 'ator', isShow: false},
-          { field: 'diretor', header: 'Diretor', type: 'diretor', isShow: false},
-          { field: 'classe', header: 'Classe', type: 'classe', isShow: false},
+          { field: 'nome', header: 'Nome', type: 'text', isShow: true, isShowForm: true},
+          { field: 'categoria', header: 'Categoria', type: 'text', isShow: true, isShowForm: true},
+          { field: 'sinopse', header: 'Sinopse', type: 'text', isShow: true, isShowForm: true},
+          { field: 'ano', header: 'Ano', type: 'number', isShow: true, isShowForm: true},
+          { field: 'atores', header: 'Atores', type: 'ator', isShow: false, isShowForm: true},
+          { field: 'diretor', header: 'Diretor', type: 'diretor', isShow: false, isShowForm: true},
+          { field: 'classe', header: 'Classe', type: 'classe', isShow: false, isShowForm: true},
         ];
         break;
       case 'Cliente':
         cols = [
-          { field: 'numInscricao', header: 'Número de Inscrição', type: 'text', isShow: true},
-          { field: 'nome', header: 'Nome', type: 'text', isShow: true},
-          { field: 'dataNascimento', header: 'Data de Nascimento', type: 'date', isShow: false},
-          { field: 'sexo', header: 'Sexo', type: 'sexo', isShow: false},
-          { field: 'CPF', header: 'CPF', type: 'text', isShow: true},
-          { field: 'endereco', header: 'Endereco', type: 'text', isShow: false},
-          { field: 'telefone', header: 'Telefone', type: 'text', isShow: true},
+          { field: 'numInscricao', header: 'Número de Inscrição', type: 'text', isShow: true, isShowForm: false},
+          { field: 'nome', header: 'Nome', type: 'text', isShow: true, isShowForm: true},
+          { field: 'dtNascimento', header: 'Data de Nascimento', type: 'date', isShow: false, isShowForm: true},
+          { field: 'sexo', header: 'Sexo', type: 'sexo', isShow: false, isShowForm: true},
+          { field: 'CPF', header: 'CPF', type: 'text', isShow: false, isShowForm: true},
+          { field: 'endereco', header: 'Endereco', type: 'text', isShow: true, isShowForm: true},
+          { field: 'telefone', header: 'Telefone', type: 'text', isShow: true, isShowForm: true},
 
         ];
         break;
@@ -199,7 +199,10 @@ export class CadastrosComponent implements OnInit{
   }
 
   deletarEntidade(entity: any){
+
     var idValue = this.getIdEntidade(entity);
+    this.nomeEntidade == "Cliente" ? idValue = entity.numInscricao : '';
+    console.log('entity', entity)
     this.rota = this.getRota(this.nomeEntidade);
 
     this.consultasService.delete(idValue, this.rota + '/excluir').subscribe(resp => {
@@ -210,6 +213,8 @@ export class CadastrosComponent implements OnInit{
   setResults(entity: any){
     for (const key in entity) {
       if (key.startsWith('id')) {
+        this.results = this.results.filter(x => x[key] != entity[key]);
+      } else if(this.nomeEntidade == "Cliente" && key.startsWith('numInscricao')){
         this.results = this.results.filter(x => x[key] != entity[key]);
       }
     }
@@ -244,5 +249,9 @@ export class CadastrosComponent implements OnInit{
 
   ativarOrDesativarCliente(data: any){
 
+  }
+
+  onSaveCadastros(event: any){
+    console.log(event)
   }
 }

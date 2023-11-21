@@ -12,7 +12,7 @@ public class ClienteDTO {
 	private Long numInscricao;
 	private String nome;
 	private Date dtNascimento;
-	private char sexo;
+	private String sexo;
 	private boolean esta_ativo;
 
 	

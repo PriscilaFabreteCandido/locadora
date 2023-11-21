@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class Socio extends Cliente{
+public class Socio extends Cliente {
 
 	@Column
 	private String CPF;
