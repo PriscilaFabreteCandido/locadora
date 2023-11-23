@@ -1,5 +1,6 @@
 package br.com.locadora.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -31,4 +32,9 @@ public class Locacao {
 	@ManyToOne
 	@JoinColumn(name = "id_item")
 	private Item item;
+
+	@ManyToOne
+	@JoinColumn(name = "id_cliente")
+	@JsonIgnoreProperties("locacoes")
+	private Cliente cliente;
 }

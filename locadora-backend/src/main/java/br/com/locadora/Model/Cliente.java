@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -28,5 +29,8 @@ public class Cliente {
 	
 	@Column
 	private boolean esta_ativo;
+
+	@OneToMany(mappedBy = "cliente")
+	private List<Locacao> locacoes;
 	
 }
