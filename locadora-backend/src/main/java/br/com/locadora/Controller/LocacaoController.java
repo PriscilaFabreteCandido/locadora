@@ -21,6 +21,21 @@ public class LocacaoController {
 
     private final LocacaoService locadoraService;
 
+    @GetMapping
+    @Operation(summary = "Retorna todos as locações cadastrados.")
+    public ResponseEntity<List<Locacao>> getAllLocacoes(){
+        List<Locacao> listaLocacoes = locadoraService.findAllLocacoes();
+        return new ResponseEntity<>(listaLocacoes, listaLocacoes.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
+    }
+
+    @GetMapping("/devolucoes")
+    @Operation(summary = "Retorna todos as devoluções feitas.")
+    public ResponseEntity<List<Locacao>> getAllDevolucoes(){
+        List<Locacao> listaDevolucoes = locadoraService.findAllDevolucoes();
+        return new ResponseEntity<>(listaDevolucoes, listaDevolucoes.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
+    }
+
+
     @PostMapping("/adicionar")
     @Operation(summary = "Adiciona uma nova locação.")
     public ResponseEntity<Locacao> cadastrarLocacao(@RequestBody @Valid LocacaoDTO locacaoDTO){
@@ -28,19 +43,32 @@ public class LocacaoController {
         return new ResponseEntity<>(locacao, HttpStatus.CREATED);
     }
 
-    @GetMapping
-    @Operation(summary = "Retorna todos as locações cadastrados.")
-    public ResponseEntity<List<Locacao>> getAllLocacoes(){
-        List<Locacao> listaLocacoes = locadoraService.findAll();
-        return new ResponseEntity<>(listaLocacoes, listaLocacoes.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
+    @PutMapping("/editar/{id}")
+    @Operation(summary = "Edita uma locação existente.")
+    public ResponseEntity<Locacao> atualizarItem(@RequestBody @Valid LocacaoDTO locacaoDTO, @PathVariable Long id){
+        Locacao locacaoAtualizada = locadoraService.alterarDadosLocacao(locacaoDTO, id);
+        return new ResponseEntity<>(locacaoAtualizada, HttpStatus.OK);
     }
 
-    @DeleteMapping("excluir/{id}")
-    @Operation(summary = "Retorna todos as locações cadastrados.")
+    @DeleteMapping("cancelar/{id}")
+    @Operation(summary = "Cancela uma locação cadastrada.")
     public ResponseEntity<List<Locacao>> deleteLocacao(@PathVariable Long id){
-        locadoraService.delete(id);
+        locadoraService.cancelarLocacao(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("/devolver/{id}")
+    @Operation(summary = "Devolve uma locação/item existente.")
+    public ResponseEntity<Locacao> devolverItem(@PathVariable Long id){
+        Locacao locacaoAtualizada = locadoraService.realizarDevolucao(id);
+        return new ResponseEntity<>(locacaoAtualizada, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Retorna uma locação específica.")
+    public ResponseEntity<Locacao> getLocacaoById(@PathVariable Long id){
+        Locacao locacao = locadoraService.findById(id);
+        return new ResponseEntity<>(locacao, HttpStatus.OK);
+    }
 
 }
