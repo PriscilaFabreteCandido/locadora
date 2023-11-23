@@ -26,7 +26,6 @@ public class LocacaoService {
     private final ClienteRepository clienteRepository;
 
     public Locacao efetuarNovaLocacao(LocacaoDTO locacaoDTO) {
-
         Item item = itemRepository.findById(locacaoDTO.getItem().getId_item()).orElseThrow(
                 () -> new EntityNotFoundException("Item não encontrado."));
 
@@ -37,13 +36,10 @@ public class LocacaoService {
             throw new IllegalStateException("O cliente está em débito. Não é possível realizar nova locação.");
         }
 
-        // Verificar se há itens disponíveis do tipo solicitado
         if (!itemEstaDisponivel(item)) {
             throw new IllegalStateException("Não há itens disponíveis do tipo solicitado");
         }
 
-
-        // Calcular o valor da locação com base na classe do título
         double valorLocacao = item.getTitulo().getClasse().getValor();
 
         Calendar calendar = Calendar.getInstance();
@@ -63,51 +59,102 @@ public class LocacaoService {
         return locacaoRepository.save(novaLocacao);
     }
 
-    public Locacao alterarDadosLocacao(Long idLocacao, LocacaoDTO novosDados) {
+    public Locacao alterarDadosLocacao(LocacaoDTO novosDados, Long idLocacao) {
         Locacao locacao = locacaoRepository.findById(idLocacao).orElseThrow(
                 () -> new EntityNotFoundException("Locação não encontrada."));
 
         validarAlteracaoLocacao(locacao, novosDados);
 
-        // Aplicar as alterações nos dados da locação
         BeanUtils.copyProperties(novosDados, locacao, "id_locacao", "dtLocacao", "item", "cliente");
         locacaoRepository.save(locacao);
 
         return locacao;
     }
+
     public void cancelarLocacao(Long idLocacao) {
         Locacao locacao = locacaoRepository.findById(idLocacao).orElseThrow(
                 () -> new EntityNotFoundException("Locação não encontrada."));
 
         validarCancelamentoLocacao(locacao);
 
-        // Remover a locação
         locacaoRepository.deleteById(idLocacao);
     }
 
+    public Locacao realizarDevolucao(Long idLocacao){
 
-    private void validarAlteracaoLocacao(Locacao locacao, LocacaoDTO novosDados) {
-        // Validar as alterações da locação, por exemplo, a nova data de devolução prevista
-        if (novosDados.getDtDevolucaoPrevista() != null && novosDados.getDtDevolucaoPrevista().before(locacao.getDtLocacao())) {
-            throw new IllegalArgumentException("A nova data de devolução prevista deve ser maior ou igual à data de locação.");
+        Locacao locacaoEncontrada = findById(idLocacao);
+
+
+        Item item = itemRepository.findByNumSerie(locacaoEncontrada.getItem().getNumSerie()).orElseThrow(
+                () -> new EntityNotFoundException("Item não encontrado."));
+
+        Locacao locacao = obterLocacaoVigente(item);
+
+        if (locacao == null) {
+            throw new EntityNotFoundException("O item informado não está locado no momento.");
         }
+
+        if (locacaoEstaEmAtraso(locacao)) {
+            double multa = calcularMulta(locacao);
+            locacao.setMultaCobrada(multa);
+        }
+
+        locacao.setDtDevolucaoEfetiva(new Date());
+        locacaoRepository.save(locacao);
+
+        return locacao;
     }
 
+    public List<Locacao> findAllLocacoes(){
+        return locacaoRepository.findByDtDevolucaoEfetivaIsNull();
+    }
+
+    public List<Locacao> findAllDevolucoes(){
+        return locacaoRepository.findByDtDevolucaoEfetivaIsNotNull();
+    }
+
+    public Locacao findById(Long id){
+        return locacaoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Locação não encontrada"));
+    }
+
+    public void delete(Long id){
+        locacaoRepository.deleteById(id);
+    }
+
+    //============================================================================
+
+    private boolean itemEstaDisponivel(Item item) {
+        return locacaoRepository.countByItemAndDtDevolucaoEfetivaIsNull(item) == 0;
+    }
+
+    private Locacao obterLocacaoVigente(Item item) {
+        return locacaoRepository.findByItemAndDtDevolucaoEfetivaIsNull(item);
+    }
+
+    private boolean locacaoEstaEmAtraso(Locacao locacao) {
+        return locacao.getDtDevolucaoPrevista().before(new Date());
+    }
+
+    private double calcularMulta(Locacao locacao) {
+        double valorLocacao = locacao.getValorCobrado();
+        return valorLocacao * 0.1;
+    }
+
+    private void validarAlteracaoLocacao(Locacao locacao, LocacaoDTO novosDados) {
+        if (novosDados.getDtDevolucaoPrevista() != null && novosDados.getDtDevolucaoPrevista().before(locacao.getDtLocacao())) {
+            throw new EntityNotFoundException("A nova data de devolução prevista deve ser maior ou igual à data de locação.");
+        }
+    }
 
     private void validarCancelamentoLocacao(Locacao locacao) {
         if (locacao.getDtDevolucaoEfetiva() != null) {
-            throw new IllegalStateException("A locação já foi devolvida e não pode ser cancelada.");
+            throw new EntityNotFoundException("A locação já foi devolvida e não pode ser cancelada.");
         }
 
         if (locacao.getValorCobrado() > 0.0) {
-            throw new IllegalStateException("A locação possui um pagamento e não pode ser cancelada.");
+            throw new EntityNotFoundException("A locação possui um pagamento e não pode ser cancelada.");
         }
     }
-
-
-
-
-
 
     private boolean clienteEstaEmDebito(Cliente cliente) {
         for (Locacao locacao : cliente.getLocacoes()) {
@@ -117,20 +164,10 @@ public class LocacaoService {
             }
         }
         return false; // O cliente não está em débito
-    }   
-
-    private boolean itemEstaDisponivel(Item item) {
-        return locacaoRepository.countByItemAndDtDevolucaoEfetivaIsNull(item) == 0;
     }
-
-    public List<Locacao> findAll(){
-        return locacaoRepository.findAll();
-    }
-
-    public void delete(Long id){
-        locacaoRepository.deleteById(id);
-    }
-
-
 
 }
+
+
+
+
