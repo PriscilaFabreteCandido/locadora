@@ -263,23 +263,17 @@ export class CreateGenericComponent implements OnInit{
   getAllClientes(){
     this.consultasService.getAll('/socios').subscribe((resp: any) => {
       if(resp){
-        console.log('resp', resp)
         this.clientes = [];
         resp.forEach((x: any) => {
           this.clientes.push(x);
 
           if(x.dependentes && x.dependentes.length > 0){
-            console.log('dependentes', x.dependentes)
             for(let i = 0; i < x.dependentes.length; i++){
-              console.log('item', x.dependentes[i])
               this.clientes.push(x.dependentes[i]);
             }
           }
 
         });
-
-        console.log('clientes', this.clientes)
-
 
         if (this.idEntidade > 0) {
           this.selectedClasse = this.classes.filter(x => x.id_classe == this.entidade.classe.id_classe)[0];
@@ -296,5 +290,34 @@ export class CreateGenericComponent implements OnInit{
         }
       }
     });
+
+  }
+
+  zeroEsquerda(numero: any) {
+    return numero < 10 ? '0' + numero : numero;
+  }
+
+  formatarData(data: any) {
+      let dia = this.zeroEsquerda(data.getDate());
+      let mes = this.zeroEsquerda(data.getMonth() + 1); // Mês é baseado em zero
+      let ano = data.getFullYear();
+
+      return ano + '-' + mes + '-' + dia;
+  }
+
+  onChangeItem(){
+    console.log('dataDevolucao', this.form.get('data_devolucao')?.value)
+    let valor = this.selectedItem?.titulo?.classe?.valor;
+    this.form.get('valor')?.setValue(valor ? valor : 0);
+    let dataAtual = new Date();
+    let qtdDias = this.selectedItem?.titulo?.classe?.prazoDevolucao;
+    let dataPrevista = new Date(dataAtual.getTime() + qtdDias * 24 * 60 * 60 * 1000);
+
+    let dataFormatada = this.formatarData(dataPrevista);
+    this.form.get('data_devolucao')?.setValue(dataFormatada);
+
+    console.log("Data Atual: " + dataAtual.toISOString());
+console.log("Data Prevista: " + dataPrevista.toISOString());
+    console.log('veio aquii', dataFormatada)
   }
 }

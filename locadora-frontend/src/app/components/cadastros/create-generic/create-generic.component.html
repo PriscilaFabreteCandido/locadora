@@ -12,7 +12,7 @@
         <input *ngSwitchCase="'number'" pInputText type="number" class="form-control flex-grow-1"
           formControlName="{{ atributo.field }}" id="{{ atributo.field }}" name="{{ atributo.field }}">
 
-        <input *ngSwitchCase="'date'" pInputText type="date" class="form-control flex-grow-1"
+        <input *ngSwitchCase="'date'" pInputText type="date" class="form-control flex-grow-1" 
           formControlName="{{ atributo.field }}" id="{{ atributo.field }}" name="{{ atributo.field }}">
 
         <ng-container *ngSwitchCase="'ator'">
@@ -29,7 +29,7 @@
 
         <ng-container *ngSwitchCase="'classe'">
           <p-dropdown [options]="classes" [(ngModel)]="selectedClasse" [placeholder]="idEntidade <= 0 ? 'Selecione uma Classe' : ''"  optionLabel="nome"
-          formControlName="{{ atributo.field }}" id="{{ atributo.field }}" name="{{ atributo.field }}"
+          onChange id="{{ atributo.field }}" name="{{ atributo.field }}" (onChange)="onChangeItem()"
           ></p-dropdown>
         </ng-container>
 
@@ -41,7 +41,7 @@
 
         <ng-container *ngSwitchCase="'item'">
           <p-dropdown [options]="itens" [(ngModel)]="selectedItem" [placeholder]="idEntidade <= 0 ? 'Selecione um Item' : ''"  optionLabel="numSerie"
-          formControlName="{{ atributo.field }}" id="{{ atributo.field }}" name="{{ atributo.field }}"
+          formControlName="{{ atributo.field }}" id="{{ atributo.field }}" name="{{ atributo.field }}" (onChange)="onChangeItem()"
           ></p-dropdown>
         </ng-container>
 
@@ -68,3 +68,5 @@
     <p-button (onClick)="onSubmit()" label="Salvar" styleClass="p-button-success" type="submit" class="btn btn-primary"></p-button>
   </div>
 </form>
+
+
