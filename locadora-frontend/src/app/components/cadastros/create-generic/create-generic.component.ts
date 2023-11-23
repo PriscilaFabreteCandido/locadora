@@ -261,9 +261,25 @@ export class CreateGenericComponent implements OnInit{
   }
 
   getAllClientes(){
-    this.consultasService.getAll('/classes').subscribe(resp => {
+    this.consultasService.getAll('/socios').subscribe((resp: any) => {
       if(resp){
-        this.classes = resp;
+        console.log('resp', resp)
+        this.clientes = [];
+        resp.forEach((x: any) => {
+          this.clientes.push(x);
+
+          if(x.dependentes && x.dependentes.length > 0){
+            console.log('dependentes', x.dependentes)
+            for(let i = 0; i < x.dependentes.length; i++){
+              console.log('item', x.dependentes[i])
+              this.clientes.push(x.dependentes[i]);
+            }
+          }
+
+        });
+
+        console.log('clientes', this.clientes)
+
 
         if (this.idEntidade > 0) {
           this.selectedClasse = this.classes.filter(x => x.id_classe == this.entidade.classe.id_classe)[0];

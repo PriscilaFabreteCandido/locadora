@@ -23,6 +23,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
 import { MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
+import { EfetuarDevolucaoComponent } from './components/locacao/efetuar-devolucao/efetuar-devolucao.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { MessagesModule } from 'primeng/messages';
     CadastrosComponent,
     NavBarComponent,
     MenubarComponent,
-    CreateGenericComponent
+    CreateGenericComponent,
+    EfetuarDevolucaoComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -50,7 +52,7 @@ import { MessagesModule } from 'primeng/messages';
     MultiSelectModule,
     DropdownModule,
     MessagesModule,
-    
+
 
   ],
   providers: [

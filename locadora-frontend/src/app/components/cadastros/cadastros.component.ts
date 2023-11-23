@@ -311,4 +311,8 @@ export class CadastrosComponent implements OnInit{
   onClickBtnLeft(){
     this.router.navigate(['cadastros', 'Cliente']);
   }
+
+  devolverLocacao(item: any){
+
+  }
 }

@@ -3,7 +3,8 @@
 <div class="flex flex-column">
   <div class="flex flex-row gap-1" >
     <label for="">Número de Série: </label>
-    <!-- <input type="text" pInputText [(ngModel)]="numSerie"  > -->
+    <input type="number" [(ngModel)]="numSerie"   >
+    <p-button (click)="getItem()"> Enviar </p-button>
   </div>
 
   <label>{{item}}</label>

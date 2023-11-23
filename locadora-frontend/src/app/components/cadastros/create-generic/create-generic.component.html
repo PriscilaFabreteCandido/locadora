@@ -40,7 +40,7 @@
         </ng-container>
 
         <ng-container *ngSwitchCase="'item'">
-          <p-dropdown [options]="itens" [(ngModel)]="selectedItem" [placeholder]="idEntidade <= 0 ? 'Selecione um Diretor' : ''"  optionLabel="nome"
+          <p-dropdown [options]="itens" [(ngModel)]="selectedItem" [placeholder]="idEntidade <= 0 ? 'Selecione um Item' : ''"  optionLabel="numSerie"
           formControlName="{{ atributo.field }}" id="{{ atributo.field }}" name="{{ atributo.field }}"
           ></p-dropdown>
         </ng-container>
@@ -48,6 +48,13 @@
         <ng-container *ngSwitchCase="'sexo'">
           <p-dropdown [options]="sexos" [(ngModel)]="selectedSexo" [placeholder]="idEntidade <= 0 ? 'Selecione um Sexo' : ''"
           formControlName="{{ atributo.field }}" id="{{ atributo.field }}" name="{{ atributo.field }}"
+          ></p-dropdown>
+        </ng-container>
+
+
+        <ng-container *ngSwitchCase="'cliente'">
+          <p-dropdown [options]="clientes" [(ngModel)]="selectedCliente" [placeholder]="idEntidade <= 0 ? 'Selecione um Cliente' : ''"
+          formControlName="{{ atributo.field }}" id="{{ atributo.field }}" name="{{ atributo.field }}" optionLabel="nome"
           ></p-dropdown>
         </ng-container>
       </ng-container>

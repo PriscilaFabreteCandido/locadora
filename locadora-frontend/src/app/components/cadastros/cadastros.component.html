@@ -38,10 +38,10 @@
           </ng-container>
 
           <ng-container *ngIf="nomeEntidade == 'Locação'">
-            <p-button pTooltip="Cancelar" icon="pi pi-minus-circle" class="mr-1" styleClass="p-button-danger" (onClick)="showConfirmationToCancelarLocacao(rowData)"></p-button>
+            <p-button pTooltip="Cancelar Locação" icon="pi pi-minus-circle" class="mr-1" styleClass="p-button-danger" (onClick)="showConfirmationToCancelarLocacao(rowData)"></p-button>
+            <p-button pTooltip="Devolver Locação" icon="pi pi-sign-in" class="mr-1" styleClass="p-button-secondary" (onClick)="devolverLocacao(rowData)"></p-button>
           </ng-container>
         </td>
-
 
       </tr>
   </ng-template>

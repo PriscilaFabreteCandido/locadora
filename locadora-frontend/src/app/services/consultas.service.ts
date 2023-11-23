@@ -65,6 +65,14 @@ export class ConsultasService {
     );
   }
 
+  cancelarLocacao(id: number, rota: string): Observable<any> {
+    return this.http.get(`${this.API}${rota}/${id}`)
+      .pipe(
+        map((res: any) => res),
+        catchError(this.handleError)
+      );
+  }
+
   private handleError(error: any): Observable<never> {
     let errorMessage = 'Ocorreu um erro no serviço.';
 

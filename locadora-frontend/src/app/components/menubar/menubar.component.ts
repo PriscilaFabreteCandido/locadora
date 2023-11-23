@@ -75,8 +75,8 @@ export class MenubarComponent implements OnInit{
               }
             },
             {
-              label: 'Efetuar Devolução',
-              icon: 'pi pi-sign-out',
+              label: 'Histórico Devoluções',
+              icon: 'pi pi-history',
               command: () => {
                 this.router.navigate(['/efetuarDevolucao']);
             }
