@@ -23,16 +23,20 @@ export class CreateGenericComponent implements OnInit{
   diretores: any[] = [];
   classes: any[] = [];
   titulos: any[] = [];
+  clientes: any[] = [];
 
   selectedAtores: any[] = [];
   selectedItens: any[] = [];
   selectedDiretor: any;
   selectedClasse: any;
   selectedTitulo: any;
+  selectedCliente: any;
   selectedSexo: any;
+  selectedItem: any;
   sexos: any[] = ['Feminino', 'Masculino']
 
   entidade: any;
+
 
   constructor(private fb:FormBuilder,
               private consultasService: ConsultasService,
@@ -52,7 +56,6 @@ export class CreateGenericComponent implements OnInit{
 
     if(this.idEntidade > 0){
       this.getById();
-
     }else{
       this.getAllEntidades();
     }
@@ -75,6 +78,10 @@ export class CreateGenericComponent implements OnInit{
         break;
       case 'Item':
         this.getAllTitulos();
+        break;
+      case 'Locação':
+          this.getAllItens();
+          this.getAllClientes();
         break;
     }
   }
@@ -243,6 +250,28 @@ export class CreateGenericComponent implements OnInit{
             if (d1.nome === this.selectedTitulo.nome) {
                 return -1;
             } else if (d2.nome === this.selectedTitulo.nome) {
+                return 1;
+            } else {
+                return d1.nome.localeCompare(d2.nome);
+            }
+          });
+        }
+      }
+    });
+  }
+
+  getAllClientes(){
+    this.consultasService.getAll('/classes').subscribe(resp => {
+      if(resp){
+        this.classes = resp;
+
+        if (this.idEntidade > 0) {
+          this.selectedClasse = this.classes.filter(x => x.id_classe == this.entidade.classe.id_classe)[0];
+
+          this.classes.sort((d1, d2) => {
+            if (d1.nome === this.selectedClasse.nome) {
+                return -1;
+            } else if (d2.nome === this.selectedClasse.nome) {
                 return 1;
             } else {
                 return d1.nome.localeCompare(d2.nome);

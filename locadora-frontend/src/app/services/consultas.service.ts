@@ -10,7 +10,8 @@ export class ConsultasService {
   private readonly API = 'http://localhost:8080/api';
   constructor(private http: HttpClient,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService) {
+    private confirmationService: ConfirmationService,
+    ) {
   }
 
   getAll(rota: string): Observable<any[]> {
@@ -59,27 +60,21 @@ export class ConsultasService {
 
   ativarOrDesativarDependente(obj: any, rota: string, id: number){
     return this.http.put(`${this.API}${rota}/${id}`, obj)
-      .pipe(
-        catchError(this.handleError)
-      );
+    .pipe(
+      catchError(this.handleError)
+    );
   }
 
   private handleError(error: any): Observable<never> {
     let errorMessage = 'Ocorreu um erro no serviço.';
 
-    if (error.error instanceof ErrorEvent) {
+    if (error.error ) {
       // Erro do lado do cliente
       errorMessage = `Erro: ${error.error.message}`;
-    } else {
-      // Erro do lado do servidor
-      errorMessage = `Código do erro: ${error.status}\nMensagem: ${error.message}`;
     }
 
-    console.error('Erro:', error);
-
+    alert(errorMessage)
     // Exibir a mensagem de erro usando o MessageService
-    this.messageService.add({ severity: 'error', summary: 'Erro', detail: errorMessage });
-
 
     return throwError(errorMessage);
   }

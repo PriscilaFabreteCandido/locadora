@@ -28,6 +28,7 @@ public class DependenteService {
 						.orElseThrow(() -> new EntityNotFoundException("Sócio não encontrado"));
 
 		BeanUtils.copyProperties(dependenteDTO, novoDependente);
+		novoDependente.setEsta_ativo(true);
 
 		int qtdeDependentesAtivos = 0;
 		for(Dependente dependente : socio.getDependentes()){
@@ -41,6 +42,7 @@ public class DependenteService {
 			throw new EntityNotFoundException("Socio já tem 3 dependentes ativos.");
 		}
 
+		System.out.println("qtdeDependentesAtivos: " +qtdeDependentesAtivos);
 		novoDependente.setSocio(socio);
 		
 		return dependenteRepository.save(novoDependente);
@@ -92,19 +94,16 @@ public class DependenteService {
 	}
 
 	public Dependente ativarOrDesativar(DependenteDTO dependenteDTO, Long id) {
-		Socio socio = socioRepository.findById(dependenteDTO.getSocio().getNumInscricao())
-				.orElseThrow(() -> new EntityNotFoundException("Sócio não encontrado"));
+		Dependente dependenteEncontrado = findById(id);
 
-
-		if((!socio.isEsta_ativo()) && dependenteDTO.isEsta_ativo()){
+		if((!dependenteEncontrado.getSocio().isEsta_ativo()) && dependenteDTO.isEsta_ativo()){
 			throw new EntityNotFoundException("Dependente não pode ser ativado pq o sócio ta desativado");
 		}
 
-		Dependente dependenteEncontrado = findById(id);
 		if(dependenteDTO != null){
 			dependenteEncontrado.setEsta_ativo(dependenteDTO.isEsta_ativo());
 		}
-		return  dependenteEncontrado;
+		return  dependenteRepository.save(dependenteEncontrado);
 	}
 
 }

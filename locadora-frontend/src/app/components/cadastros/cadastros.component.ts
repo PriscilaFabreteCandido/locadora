@@ -1,7 +1,7 @@
 import { ConsultasService } from '../../services/consultas.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'cadastros',
@@ -14,7 +14,10 @@ export class CadastrosComponent implements OnInit{
   @Output() onSave = new EventEmitter<any>();
 
   cols: any[] = [];
-  results: any[] = [];
+  results: any[] = [
+    {},
+    {}
+  ];
 
   atributos: string[] = ['nome', 'teste'];
   openDialog: boolean = false;
@@ -27,7 +30,8 @@ export class CadastrosComponent implements OnInit{
   constructor(private route: ActivatedRoute,
               private router: Router,
               private consultasService: ConsultasService,
-              private confirmationService: ConfirmationService
+              private confirmationService: ConfirmationService,
+              private messageService: MessageService,
     ) { }
 
   ngOnInit(): void {
@@ -61,6 +65,7 @@ export class CadastrosComponent implements OnInit{
         }
       });
     }
+
 
   }
 
@@ -156,6 +161,14 @@ export class CadastrosComponent implements OnInit{
             { field: 'sexo', header: 'Sexo', type: 'sexo', isShow: true, isShowForm: true},
           ];
           break;
+      case 'Locação':
+        cols = [
+          { field: 'item', header: 'Item', type: 'item', isShow: true, isShowForm: true},
+          { field: 'clinte', header: 'Cliente', type: 'cliente', isShow: true, isShowForm: true},
+          { field: 'valor', header: 'Valor (R$)', type: 'number', isShow: true, isShowForm: true},
+          { field: 'data_devolucao', header: 'Data da Devolução Prevista', type: 'date', isShow: true, isShowForm: true},
+        ];
+          break;
     }
 
     return cols;
@@ -193,6 +206,20 @@ export class CadastrosComponent implements OnInit{
   showConfirmationToDelete(entity: any): void {
     this.confirmationService.confirm({
       message: 'Tem certeza que deseja excluir esta entidade?',
+      accept: () => {
+        // O código que será executado quando o usuário confirmar a exclusão
+        this.deletarEntidade(entity);
+      },
+      reject: () => {
+        // O código que será executado quando o usuário cancelar a exclusão (opcional)
+      }
+    });
+  }
+
+
+  showConfirmationToCancelarLocacao(entity: any): void {
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja cancelar esta locação?',
       accept: () => {
         // O código que será executado quando o usuário confirmar a exclusão
         this.deletarEntidade(entity);
@@ -271,6 +298,9 @@ export class CadastrosComponent implements OnInit{
     console.log('socio', socio)
     this.consultasService.ativarOrDesativarSocio(socio, this.rota + '/ativarOrDesativar', data.numInscricao).subscribe(resp => {
       this.processarFormulario(resp);
+    }, error => {
+      console.log('jeljsljdlkjlkdaj')
+      this.messageService.add({ severity: 'error', summary: 'Erro', detail: error });
     });
   }
 

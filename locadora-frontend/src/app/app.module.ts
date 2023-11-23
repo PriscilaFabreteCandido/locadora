@@ -23,6 +23,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
 import { MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,7 +49,8 @@ import { MessagesModule } from 'primeng/messages';
     ConfirmDialogModule,
     MultiSelectModule,
     DropdownModule,
-    MessagesModule
+    MessagesModule,
+    
 
   ],
   providers: [

@@ -71,7 +71,7 @@ export class MenubarComponent implements OnInit{
                 label: 'Efetuar Locação',
                 icon: 'pi pi-shopping-cart',
                 command: () => {
-                  this.router.navigate(['/efetuarLocacao']);
+                  this.router.navigate(['/cadastros/Locação']);
               }
             },
             {

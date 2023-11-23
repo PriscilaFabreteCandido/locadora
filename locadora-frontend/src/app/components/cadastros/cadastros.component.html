@@ -25,7 +25,7 @@
 
         <td>
           <p-button pTooltip="Editar" icon="pi pi-pencil" class="mr-1" styleClass="p-button-warning" (onClick)="editarEntidade(rowData)"></p-button>
-          <p-button pTooltip="Excluir" icon="pi pi-trash" class="mr-1" styleClass="p-button-danger" (onClick)="showConfirmationToDelete(rowData)"></p-button>
+          <p-button *ngIf="nomeEntidade != 'Locação'" pTooltip="Excluir" icon="pi pi-trash" class="mr-1" styleClass="p-button-danger" (onClick)="showConfirmationToDelete(rowData)"></p-button>
 
           <ng-container *ngIf="nomeEntidade == 'Cliente'">
             <p-button pTooltip="Gerenciar Dependentes" icon="pi pi-users" class="mr-1" styleClass="p-button-primary" (onClick)="gerenciarDependente(rowData)"></p-button>
@@ -35,6 +35,10 @@
 
           <ng-container *ngIf="nomeEntidade == 'Dependente'">
             <p-button [pTooltip]="rowData.esta_ativo ? 'Desativar Dependente' : 'Ativar Dependente'" [icon]="rowData.esta_ativo ? 'pi pi-lock-open' : 'pi pi-lock'" class="mr-1" styleClass="p-button-secondary" (onClick)="ativarOrDesativarDependente(rowData)"></p-button>
+          </ng-container>
+
+          <ng-container *ngIf="nomeEntidade == 'Locação'">
+            <p-button pTooltip="Cancelar" icon="pi pi-minus-circle" class="mr-1" styleClass="p-button-danger" (onClick)="showConfirmationToCancelarLocacao(rowData)"></p-button>
           </ng-container>
         </td>
 
