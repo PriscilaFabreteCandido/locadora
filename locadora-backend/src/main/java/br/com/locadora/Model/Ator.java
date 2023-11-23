@@ -16,7 +16,7 @@ public class Ator {
     private String nome;
 
     @ManyToMany(mappedBy = "listaAtores")
-    @JsonIgnoreProperties ("listaAtores")
+    @JsonIgnoreProperties("listaAtores")
     private List<Titulo> listaTitulos;
 
 
