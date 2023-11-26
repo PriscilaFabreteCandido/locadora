@@ -14,18 +14,17 @@ export class CadastrosComponent implements OnInit{
   @Output() onSave = new EventEmitter<any>();
 
   cols: any[] = [];
-  results: any[] = [
-    {},
-    {}
-  ];
+  results: any[] = [];
 
   atributos: string[] = ['nome', 'teste'];
   openDialog: boolean = false;
   idEntidade: number = 0;
   rota: string = '';
   openDialogDependentes: boolean = false;
+  openDialogEfetuarDevolucao: boolean = false;
   showBtnLeft = false;
   idSocio: number = 0;
+  idLocacaoParaEditar: number = 0;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -59,9 +58,11 @@ export class CadastrosComponent implements OnInit{
         }
       });
     }else{
+      console.log('this.rota', this.rota)
       this.consultasService.getAll(this.rota).subscribe(resp => {
         if(resp){
           this.results = resp;
+          console.log('this.results', this.results)
         }
       });
     }
@@ -93,6 +94,11 @@ export class CadastrosComponent implements OnInit{
       case 'Dependente':
           rota = '/dependentes';
           break;
+      case 'Locação':
+        rota = '/locacoes';
+        break;
+      case 'Histórico de Devoluções':
+        rota = '/locacoes/devolucoes'
     }
 
     return rota;
@@ -164,11 +170,23 @@ export class CadastrosComponent implements OnInit{
       case 'Locação':
         cols = [
           { field: 'item', header: 'Item', type: 'item', isShow: true, isShowForm: true},
-          { field: 'clinte', header: 'Cliente', type: 'cliente', isShow: true, isShowForm: true},
-          { field: 'valor', header: 'Valor (R$)', type: 'number', isShow: true, isShowForm: true},
-          { field: 'data_devolucao', header: 'Data da Devolução Prevista', type: 'date', isShow: true, isShowForm: true},
+          { field: 'cliente', header: 'Cliente', type: 'cliente', isShow: true, isShowForm: true},
+          { field: 'valorCobrado', header: 'Valor (R$)', type: 'number', isShow: true, isShowForm: true},
+          { field: 'dtLocacao', header: 'Data de Locação', type: 'date', isShow: true, isShowForm: false},
+          { field: 'dtDevolucaoPrevista', header: 'Data da Devolução Prevista', type: 'date', isShow: true, isShowForm: true},
         ];
           break;
+        case 'Histórico de Devoluções':
+          cols = [
+            { field: 'item', header: 'Item', type: 'item', isShow: true, isShowForm: true},
+            { field: 'cliente', header: 'Cliente', type: 'cliente', isShow: true, isShowForm: true},
+            { field: 'valorCobrado', header: 'Valor (R$)', type: 'number', isShow: true, isShowForm: true},
+            { field: 'multaCobrada', header: 'Multa (R$)', type: 'number', isShow: true, isShowForm: true},
+            { field: 'dtLocacao', header: 'Data de Locação', type: 'date', isShow: true, isShowForm: true},
+            { field: 'dtDevolucaoPrevista', header: 'Data da Devolução Prevista', type: 'date', isShow: true, isShowForm: true},
+            { field: 'dtDevolucaoEfetiva', header: 'Data da Devolução Efetiva', type: 'date', isShow: true, isShowForm: true},
+          ];
+            break;
     }
 
     return cols;
@@ -222,7 +240,9 @@ export class CadastrosComponent implements OnInit{
       message: 'Tem certeza que deseja cancelar esta locação?',
       accept: () => {
         // O código que será executado quando o usuário confirmar a exclusão
-        this.deletarEntidade(entity);
+        this.consultasService.cancelarLocacao(entity.id_locacao, '/locacoes/cancelar').subscribe(resp => {
+
+        });
       },
       reject: () => {
         // O código que será executado quando o usuário cancelar a exclusão (opcional)
@@ -299,7 +319,6 @@ export class CadastrosComponent implements OnInit{
     this.consultasService.ativarOrDesativarSocio(socio, this.rota + '/ativarOrDesativar', data.numInscricao).subscribe(resp => {
       this.processarFormulario(resp);
     }, error => {
-      console.log('jeljsljdlkjlkdaj')
       this.messageService.add({ severity: 'error', summary: 'Erro', detail: error });
     });
   }
@@ -313,6 +332,18 @@ export class CadastrosComponent implements OnInit{
   }
 
   devolverLocacao(item: any){
+    this.idLocacaoParaEditar = item.id_locacao;
+    this.openDialogEfetuarDevolucao = true;
+  }
 
+  onDevolverItem(event: any){
+    this.openDialogEfetuarDevolucao = false;
+    this.idLocacaoParaEditar = 0;
+    this.consultasService.getAll(this.rota).subscribe(resp => {
+      if(resp){
+        this.results = resp;
+        console.log('this.results', this.results)
+      }
+    });
   }
 }

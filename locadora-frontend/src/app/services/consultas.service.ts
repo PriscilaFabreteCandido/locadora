@@ -66,7 +66,23 @@ export class ConsultasService {
   }
 
   cancelarLocacao(id: number, rota: string): Observable<any> {
-    return this.http.get(`${this.API}${rota}/${id}`)
+    return this.http.delete(`${this.API}${rota}/${id}`)
+      .pipe(
+        map((res: any) => res),
+        catchError(this.handleError)
+      );
+  }
+
+  obterMulta(id: number): Observable<any> {
+    return this.http.get(`${this.API}${'/locacoes/obterMulta'}/${id}`)
+      .pipe(
+        map((res: any) => res),
+        catchError(this.handleError)
+      );
+  }
+
+  devolverItem(id: number): Observable<any> {
+    return this.http.get(`${this.API}${'/locacoes/devolver'}/${id}`)
       .pipe(
         map((res: any) => res),
         catchError(this.handleError)
@@ -74,6 +90,7 @@ export class ConsultasService {
   }
 
   private handleError(error: any): Observable<never> {
+    console.log('error', error)
     let errorMessage = 'Ocorreu um erro no serviço.';
 
     if (error.error ) {

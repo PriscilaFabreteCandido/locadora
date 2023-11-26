@@ -3,7 +3,7 @@
     <p-button *ngIf="showBtnLeft" (onClick)="onClickBtnLeft()" icon="pi pi-arrow-circle-left" class="left-btn"></p-button>
     <h1>{{nomeEntidade}}</h1>
   </div>
-  <p-button label="Cadastrar" styleClass="p-button-success" (onClick)="openModal()"></p-button>
+  <p-button *ngIf="nomeEntidade != 'Histórico de Devoluções'"label="Cadastrar" styleClass="p-button-success" (onClick)="openModal()"></p-button>
 </div>
 
 <p-table [columns]="cols" [value]="results" [tableStyle]="{ 'min-width': '50rem' }">
@@ -13,19 +13,22 @@
           <th *ngIf="col.isShow">{{ col.header }}</th>
         </ng-container>
 
-        <th >Ações</th>
+        <th>Ações</th>
       </tr>
   </ng-template>
+
   <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr>
         <ng-container *ngFor="let col of columns">
           <td *ngIf="col.isShow && col.type === 'date'"> {{ rowData[col.field] | date:'dd/MM/yyyy' }}</td>
-          <td *ngIf="col.isShow && col.type !== 'date'"> {{ rowData[col.field] }}</td>
+          <td *ngIf="col.isShow && (col.type == 'text' || col.type == 'number')"> {{ rowData[col.field] }}</td>
+          <td *ngIf="col.isShow && col.type == 'cliente'"> {{ rowData.cliente.nome }}</td>
+          <td *ngIf="col.isShow && col.type == 'item'"> {{ rowData.item.numSerie }}</td>
         </ng-container>
 
         <td>
-          <p-button pTooltip="Editar" icon="pi pi-pencil" class="mr-1" styleClass="p-button-warning" (onClick)="editarEntidade(rowData)"></p-button>
-          <p-button *ngIf="nomeEntidade != 'Locação'" pTooltip="Excluir" icon="pi pi-trash" class="mr-1" styleClass="p-button-danger" (onClick)="showConfirmationToDelete(rowData)"></p-button>
+          <p-button *ngIf="nomeEntidade != 'Histórico de Devoluções'" pTooltip="Editar" icon="pi pi-pencil" class="mr-1" styleClass="p-button-warning" (onClick)="editarEntidade(rowData)"></p-button>
+          <p-button *ngIf="nomeEntidade != 'Locação' && nomeEntidade != 'Histórico de Devoluções'" pTooltip="Excluir" icon="pi pi-trash" class="mr-1" styleClass="p-button-danger" (onClick)="showConfirmationToDelete(rowData)"></p-button>
 
           <ng-container *ngIf="nomeEntidade == 'Cliente'">
             <p-button pTooltip="Gerenciar Dependentes" icon="pi pi-users" class="mr-1" styleClass="p-button-primary" (onClick)="gerenciarDependente(rowData)"></p-button>
@@ -37,10 +40,10 @@
             <p-button [pTooltip]="rowData.esta_ativo ? 'Desativar Dependente' : 'Ativar Dependente'" [icon]="rowData.esta_ativo ? 'pi pi-lock-open' : 'pi pi-lock'" class="mr-1" styleClass="p-button-secondary" (onClick)="ativarOrDesativarDependente(rowData)"></p-button>
           </ng-container>
 
-          <ng-container *ngIf="nomeEntidade == 'Locação'">
-            <p-button pTooltip="Cancelar Locação" icon="pi pi-minus-circle" class="mr-1" styleClass="p-button-danger" (onClick)="showConfirmationToCancelarLocacao(rowData)"></p-button>
-            <p-button pTooltip="Devolver Locação" icon="pi pi-sign-in" class="mr-1" styleClass="p-button-secondary" (onClick)="devolverLocacao(rowData)"></p-button>
-          </ng-container>
+
+          <p-button *ngIf="nomeEntidade == 'Locação' || nomeEntidade == 'Histórico de Devoluções'" pTooltip="Cancelar Locação" icon="pi pi-minus-circle" class="mr-1" styleClass="p-button-danger" (onClick)="showConfirmationToCancelarLocacao(rowData)"></p-button>
+          <p-button *ngIf="nomeEntidade == 'Locação'" pTooltip="Devolver Locação" icon="pi pi-sign-in" class="mr-1" styleClass="p-button-secondary" (onClick)="devolverLocacao(rowData)"></p-button>
+
         </td>
 
       </tr>
@@ -62,6 +65,14 @@
   <ng-container *ngIf="openDialogDependentes">
     <cadastros [nomeEntidade]="'Dependente'" (onSave)="onSaveCadastros($event)" >
     </cadastros>
+  </ng-container>
+</p-dialog>
+
+<p-dialog [header]="'Efetuar Devolução'" [(visible)]="openDialogEfetuarDevolucao" [responsive]="true"
+  [style]="{ 'width': '80vw', 'min-height': '80hw' }">
+  <ng-container *ngIf="openDialogEfetuarDevolucao">
+    <efetuar-devolucao [numSerie]="idLocacaoParaEditar" (onSave)="onDevolverItem($event)" >
+    </efetuar-devolucao>
   </ng-container>
 </p-dialog>
 

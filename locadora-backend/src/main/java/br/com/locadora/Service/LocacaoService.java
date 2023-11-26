@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,21 +41,14 @@ public class LocacaoService {
             throw new IllegalStateException("Não há itens disponíveis do tipo solicitado");
         }
 
-        double valorLocacao = item.getTitulo().getClasse().getValor();
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(locacaoDTO.getDtLocacao());
-        calendar.add(Calendar.DAY_OF_MONTH, item.getTitulo().getClasse().getPrazoDevolucao());
-
-        Date dataDevolucaoPrevista = calendar.getTime();
-
         Locacao novaLocacao = new Locacao();
         BeanUtils.copyProperties(locacaoDTO, novaLocacao);
-        novaLocacao.setDtDevolucaoPrevista(dataDevolucaoPrevista);
-        novaLocacao.setValorCobrado(valorLocacao);
+        novaLocacao.setDtDevolucaoPrevista(locacaoDTO.getDtDevolucaoPrevista());
+        novaLocacao.setValorCobrado(locacaoDTO.getValorCobrado());
         novaLocacao.setMultaCobrada(0.0);
         novaLocacao.setItem(item);
         novaLocacao.setCliente(cliente);
+        novaLocacao.setDtLocacao(new Date());
 
         return locacaoRepository.save(novaLocacao);
     }
@@ -65,7 +59,8 @@ public class LocacaoService {
 
         validarAlteracaoLocacao(locacao, novosDados);
 
-        BeanUtils.copyProperties(novosDados, locacao, "id_locacao", "dtLocacao", "item", "cliente");
+        BeanUtils.copyProperties(novosDados, locacao, "id_locacao", "dtLocacao", "item", "cliente", "dtDevolucaoPrevista");
+        locacao.setDtDevolucaoPrevista(novosDados.getDtDevolucaoPrevista());
         locacaoRepository.save(locacao);
 
         return locacao;
@@ -141,7 +136,10 @@ public class LocacaoService {
     }
 
     private void validarAlteracaoLocacao(Locacao locacao, LocacaoDTO novosDados) {
-        if (novosDados.getDtDevolucaoPrevista() != null && novosDados.getDtDevolucaoPrevista().before(locacao.getDtLocacao())) {
+        Date novaDataDevolucaoPrevista = novosDados.getDtDevolucaoPrevista();
+        Date dataLocacao = locacao.getDtLocacao();
+
+        if (novaDataDevolucaoPrevista != null && dataLocacao != null && novaDataDevolucaoPrevista.before(dataLocacao)) {
             throw new EntityNotFoundException("A nova data de devolução prevista deve ser maior ou igual à data de locação.");
         }
     }
@@ -164,6 +162,15 @@ public class LocacaoService {
             }
         }
         return false; // O cliente não está em débito
+    }
+
+    public double obterMulta(Long id){
+        Optional<Locacao> locacao = this.locacaoRepository.findById(id);
+        if(locacao.isPresent() && this.locacaoEstaEmAtraso(locacao.get())){
+            return this.calcularMulta(locacao.get());
+        }
+
+        return 0.0;
     }
 
 }

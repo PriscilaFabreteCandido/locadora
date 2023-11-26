@@ -75,10 +75,10 @@ export class MenubarComponent implements OnInit{
               }
             },
             {
-              label: 'Histórico Devoluções',
+              label: 'Histórico de Devoluções',
               icon: 'pi pi-history',
               command: () => {
-                this.router.navigate(['/efetuarDevolucao']);
+                this.router.navigate(['cadastros/Histórico de Devoluções']);
             }
           },
         ]

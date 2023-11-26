@@ -71,4 +71,10 @@ public class LocacaoController {
         return new ResponseEntity<>(locacao, HttpStatus.OK);
     }
 
+    @GetMapping("/obterMulta/{id}")
+    @Operation(summary = "Retorna uma locação específica.")
+    public ResponseEntity<Double> obterMulta(@PathVariable Long id){
+        Double result = locadoraService.obterMulta(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

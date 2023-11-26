@@ -306,18 +306,14 @@ export class CreateGenericComponent implements OnInit{
   }
 
   onChangeItem(){
-    console.log('dataDevolucao', this.form.get('data_devolucao')?.value)
     let valor = this.selectedItem?.titulo?.classe?.valor;
-    this.form.get('valor')?.setValue(valor ? valor : 0);
+
+    this.form.get('valorCobrado')?.setValue(valor ? valor : 0);
     let dataAtual = new Date();
     let qtdDias = this.selectedItem?.titulo?.classe?.prazoDevolucao;
     let dataPrevista = new Date(dataAtual.getTime() + qtdDias * 24 * 60 * 60 * 1000);
 
     let dataFormatada = this.formatarData(dataPrevista);
-    this.form.get('data_devolucao')?.setValue(dataFormatada);
-
-    console.log("Data Atual: " + dataAtual.toISOString());
-console.log("Data Prevista: " + dataPrevista.toISOString());
-    console.log('veio aquii', dataFormatada)
+    this.form.get('dtDevolucaoPrevista')?.setValue(dataFormatada);
   }
 }
