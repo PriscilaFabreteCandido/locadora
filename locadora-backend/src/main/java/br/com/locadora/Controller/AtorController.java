@@ -27,7 +27,7 @@ public class AtorController {
     @Operation(summary = "Retorna todos os atores cadastrados.")
     public ResponseEntity<List<Ator>> getAllAtores(){
         List<Ator> listaAtores = atorService.findAll();
-        return new ResponseEntity<>(listaAtores, listaAtores.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
+        return new ResponseEntity<>(listaAtores, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

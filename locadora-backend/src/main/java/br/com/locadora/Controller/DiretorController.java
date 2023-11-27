@@ -27,7 +27,7 @@ public class DiretorController {
     @Operation(summary = "Retorna todos os diretores cadastrados.")
     public ResponseEntity<List<Diretor>> getAllDiretores(){
         List<Diretor> listaDiretores = diretorService.findAll();
-        return new ResponseEntity<>(listaDiretores, listaDiretores.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
+        return new ResponseEntity<>(listaDiretores, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

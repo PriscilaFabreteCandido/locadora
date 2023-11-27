@@ -26,7 +26,7 @@ public class ClasseController {
     @Operation(summary = "Retorna todos as classes cadastrados.")
     public ResponseEntity<List<Classe>> getAllClasses(){
         List<Classe> listaClasses = classeService.findAll();
-        return new ResponseEntity<>(listaClasses, listaClasses.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
+        return new ResponseEntity<>(listaClasses, HttpStatus.OK);
     }
     
     @GetMapping("/{id}")

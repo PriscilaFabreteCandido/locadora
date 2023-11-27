@@ -28,7 +28,7 @@ public class DependenteController {
 	@Operation(summary = "Retorna todos os dependentes cadastrados.")
 	public ResponseEntity<List<Dependente>> getAllDependentes(){
 		List<Dependente> listaDependentes = dependenteService.findAll();
-		return new ResponseEntity<>(listaDependentes, listaDependentes.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
+		return new ResponseEntity<>(listaDependentes, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")

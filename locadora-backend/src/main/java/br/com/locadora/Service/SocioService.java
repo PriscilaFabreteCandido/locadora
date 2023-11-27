@@ -21,9 +21,7 @@ public class SocioService {
 
 	public Socio create(SocioDTO socioDTO){
 		Socio novoSocio = new Socio();
-		System.out.println("CPF SOCIO" + socioDTO.getCPF());
 		BeanUtils.copyProperties(socioDTO, novoSocio);
-
 		return socioRepository.save(novoSocio);
 	}
 
@@ -47,7 +45,9 @@ public class SocioService {
 		if(socioEncontrado !=  null){
 			socioEncontrado.setEsta_ativo(socioDTO.isEsta_ativo());
 			for(Dependente dependente : socioEncontrado.getDependentes()){
-				socioEncontrado.setEsta_ativo(socioDTO.isEsta_ativo());
+				if(!socioDTO.isEsta_ativo()){
+					dependente.setEsta_ativo(false);
+				}
 			}
 		}
 
@@ -55,6 +55,11 @@ public class SocioService {
 	}
 	public void delete(Long id){
 		Socio socioEncontrado = findById(id);
+
+		if(socioEncontrado.getDependentes().size() >= 1){
+			throw new EntityNotFoundException("Sócio não pode ser excluido porque tem dependentes ligados a ele.");
+		}
+
 
 		socioRepository.delete(socioEncontrado);
 	}

@@ -3,6 +3,7 @@ package br.com.locadora.Service;
 import br.com.locadora.DTO.DependenteDTO;
 import br.com.locadora.Model.Dependente;
 import br.com.locadora.Model.Socio;
+import br.com.locadora.Repository.ClienteRepository;
 import br.com.locadora.Repository.DependenteRepository;
 import br.com.locadora.Repository.DependenteRepository;
 import br.com.locadora.Repository.SocioRepository;
@@ -19,6 +20,7 @@ public class DependenteService {
 	
 	private final DependenteRepository dependenteRepository;
 	private final SocioRepository socioRepository;
+	private final ClienteRepository clienteRepository;
 	
 	public Dependente create(DependenteDTO dependenteDTO) {
 		Dependente novoDependente = new Dependente();
@@ -61,8 +63,8 @@ public class DependenteService {
 	
 	public void delete(Long id) {
 		Dependente dependenteEncontrado = findById(id);
-		
-		dependenteRepository.delete(dependenteEncontrado);
+
+		clienteRepository.deleteById(id);
 	}
 	
 	public Dependente findById(Long id) {
@@ -119,7 +121,5 @@ public class DependenteService {
 		}
 		return false;
 	}
-
-
 
 }

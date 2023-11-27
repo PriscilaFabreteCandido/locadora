@@ -29,7 +29,7 @@ public class SocioController {
 	@Operation(summary = "Retorna todos os sócios cadastrados.")
 	public ResponseEntity<List<Socio>> getAllSocios(){
 		List<Socio> listaSocios = socioService.findAll();
-		return new ResponseEntity<>(listaSocios, listaSocios.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
+		return new ResponseEntity<>(listaSocios, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")

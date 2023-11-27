@@ -25,14 +25,14 @@ public class LocacaoController {
     @Operation(summary = "Retorna todos as locações cadastrados.")
     public ResponseEntity<List<Locacao>> getAllLocacoes(){
         List<Locacao> listaLocacoes = locadoraService.findAllLocacoes();
-        return new ResponseEntity<>(listaLocacoes, listaLocacoes.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
+        return new ResponseEntity<>(listaLocacoes, HttpStatus.OK);
     }
 
     @GetMapping("/devolucoes")
     @Operation(summary = "Retorna todos as devoluções feitas.")
     public ResponseEntity<List<Locacao>> getAllDevolucoes(){
         List<Locacao> listaDevolucoes = locadoraService.findAllDevolucoes();
-        return new ResponseEntity<>(listaDevolucoes, listaDevolucoes.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
+        return new ResponseEntity<>(listaDevolucoes, HttpStatus.OK);
     }
 
 

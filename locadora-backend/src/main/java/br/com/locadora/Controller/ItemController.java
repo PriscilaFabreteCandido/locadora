@@ -26,7 +26,7 @@ public class ItemController {
 	@Operation(summary = "Retorna todos os itens cadastrados.")
 	public ResponseEntity<List<Item>> getAllItens(){
 		List<Item> listaItens = itemService.findAll();
-		return new ResponseEntity<>(listaItens, listaItens.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
+		return new ResponseEntity<>(listaItens, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")

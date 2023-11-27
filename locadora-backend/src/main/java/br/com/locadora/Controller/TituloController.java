@@ -28,7 +28,7 @@ public class TituloController {
 	@Operation(summary = "Retorna todos os títulos cadastrados.")
 	public ResponseEntity<List<Titulo>> getAllTitulos(){
 		List<Titulo> listaTitulos = tituloService.findAll();
-		return new ResponseEntity<>(listaTitulos, listaTitulos.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
+		return new ResponseEntity<>(listaTitulos, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
