@@ -23,26 +23,15 @@ public class DependenteService {
 	public Dependente create(DependenteDTO dependenteDTO) {
 		Dependente novoDependente = new Dependente();
 
-
-		Socio socio = socioRepository.findById(dependenteDTO.getSocio().getNumInscricao())
-						.orElseThrow(() -> new EntityNotFoundException("Sócio não encontrado"));
+		Socio socio = getSocioById(dependenteDTO.getSocio().getNumInscricao());
 
 		BeanUtils.copyProperties(dependenteDTO, novoDependente);
 		novoDependente.setEsta_ativo(true);
 
-		int qtdeDependentesAtivos = 0;
-		for(Dependente dependente : socio.getDependentes()){
-
-			if(dependente.isEsta_ativo()){
-				qtdeDependentesAtivos++;
-			}
-		}
-
-		if(qtdeDependentesAtivos >= 3){
+		if(maximoDependentesAtivos(socio)){
 			throw new EntityNotFoundException("Socio já tem 3 dependentes ativos.");
 		}
 
-		System.out.println("qtdeDependentesAtivos: " +qtdeDependentesAtivos);
 		novoDependente.setSocio(socio);
 		
 		return dependenteRepository.save(novoDependente);
@@ -51,28 +40,19 @@ public class DependenteService {
 	public Dependente update(DependenteDTO dependenteDTO, Long id) {
 		Dependente dependenteEncontrado = findById(id);
 
-		Socio socio = socioRepository.findById(dependenteDTO.getSocio().getNumInscricao())
+		Socio socio = socioRepository.findById(dependenteEncontrado.getSocio().getNumInscricao())
 				.orElseThrow(() -> new EntityNotFoundException("Sócio não encontrado"));
 
-
-		if((!socio.isEsta_ativo()) && dependenteDTO.isEsta_ativo()){
-			throw new EntityNotFoundException("Dependente não pode ser ativado pq o sócio ta desativado");
+		if(socioEstaAtivo(dependenteEncontrado, dependenteDTO)){
+			throw new EntityNotFoundException("Dependente não pode ser ativado porque o sócio está desativado");
 		}
 
+		if(maximoDependentesAtivos(socio) && dependenteDTO.isEsta_ativo()){
+			throw new EntityNotFoundException("Socio já tem 3 dependentes ativos.");
+		}
 
 		BeanUtils.copyProperties(dependenteDTO, dependenteEncontrado, "numInscricao");
 
-		int qtdeDependentesAtivos = 0;
-		for(Dependente dependente : socio.getDependentes()){
-
-			if(dependente.isEsta_ativo()){
-				qtdeDependentesAtivos++;
-			}
-		}
-
-		if(qtdeDependentesAtivos >= 3){
-			throw new EntityNotFoundException("Socio já tem 3 dependentes ativos.");
-		}
 
 		dependenteEncontrado.setSocio(socio);
 		
@@ -96,14 +76,50 @@ public class DependenteService {
 	public Dependente ativarOrDesativar(DependenteDTO dependenteDTO, Long id) {
 		Dependente dependenteEncontrado = findById(id);
 
-		if((!dependenteEncontrado.getSocio().isEsta_ativo()) && dependenteDTO.isEsta_ativo()){
-			throw new EntityNotFoundException("Dependente não pode ser ativado pq o sócio ta desativado");
+		if(socioEstaAtivo(dependenteEncontrado, dependenteDTO)){
+			throw new EntityNotFoundException("Dependente não pode ser ativado porque o sócio está desativado");
+		}
+
+		Socio socio = getSocioById(dependenteEncontrado.getSocio().getNumInscricao());
+
+		if(maximoDependentesAtivos(socio) && dependenteDTO.isEsta_ativo()){
+			throw new EntityNotFoundException("Socio já tem 3 dependentes ativos.");
 		}
 
 		if(dependenteDTO != null){
 			dependenteEncontrado.setEsta_ativo(dependenteDTO.isEsta_ativo());
 		}
+
 		return  dependenteRepository.save(dependenteEncontrado);
 	}
+
+	//=========================================
+
+	private Socio getSocioById(Long socioId) {
+		return socioRepository.findById(socioId)
+				.orElseThrow(() -> new EntityNotFoundException("Sócio não encontrado"));
+	}
+
+	private boolean socioEstaAtivo(Dependente dependenteEncontrado, DependenteDTO dependenteDTO){
+		return !dependenteEncontrado.getSocio().isEsta_ativo() && dependenteDTO.isEsta_ativo();
+
+	}
+
+	private boolean maximoDependentesAtivos(Socio socio) {
+		int qtdeDependentesAtivos = 0;
+
+		for (Dependente dependente : socio.getDependentes()) {
+			if (dependente.isEsta_ativo()) {
+				qtdeDependentesAtivos++;
+			}
+		}
+
+		if(qtdeDependentesAtivos >= 3){
+			return true;
+		}
+		return false;
+	}
+
+
 
 }

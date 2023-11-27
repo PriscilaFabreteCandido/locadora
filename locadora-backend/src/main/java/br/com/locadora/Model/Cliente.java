@@ -1,5 +1,6 @@
 package br.com.locadora.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,7 @@ public class Cliente {
 	private boolean esta_ativo;
 
 	@OneToMany(mappedBy = "cliente")
+	@JsonIgnoreProperties(value = "cliente")
 	private List<Locacao> locacoes;
 	
 }

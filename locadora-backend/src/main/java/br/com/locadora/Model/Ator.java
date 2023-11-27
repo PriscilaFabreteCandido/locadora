@@ -1,5 +1,6 @@
 package br.com.locadora.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,7 +17,7 @@ public class Ator {
     private String nome;
 
     @ManyToMany(mappedBy = "listaAtores")
-    @JsonIgnoreProperties("listaAtores")
+    @JsonIgnore
     private List<Titulo> listaTitulos;
 
 
