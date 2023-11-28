@@ -1,0 +1,11 @@
+
+<div class="flex flex-column" *ngIf="cliente">
+  <label for="" >Número da Inscrição: {{cliente.numInscricao}}</label>
+  <label for="" >Nome: {{cliente.nome}}</label>
+  <label for="" >CPF: {{cliente.cpf}}</label>
+  <label for="" >Data de Nascimento: {{ cliente.dtNascimento | date:'dd/MM/yyyy' }}</label>
+  <label for="" >Sexo: {{cliente.sexo}}</label>
+  <label for="" >Endereco: {{cliente.endereco}}</label>
+
+</div>
+

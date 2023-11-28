@@ -12,7 +12,7 @@
         <input *ngSwitchCase="'number'" pInputText type="number" class="form-control flex-grow-1"
           formControlName="{{ atributo.field }}" id="{{ atributo.field }}" name="{{ atributo.field }}">
 
-        <input *ngSwitchCase="'date'" pInputText type="date" class="form-control flex-grow-1" 
+        <input *ngSwitchCase="'date'" pInputText type="date" class="form-control flex-grow-1"
           formControlName="{{ atributo.field }}" id="{{ atributo.field }}" name="{{ atributo.field }}">
 
         <ng-container *ngSwitchCase="'ator'">
@@ -29,7 +29,7 @@
 
         <ng-container *ngSwitchCase="'classe'">
           <p-dropdown [options]="classes" [(ngModel)]="selectedClasse" [placeholder]="idEntidade <= 0 ? 'Selecione uma Classe' : ''"  optionLabel="nome"
-          onChange id="{{ atributo.field }}" name="{{ atributo.field }}" (onChange)="onChangeItem()"
+          formControlName="{{ atributo.field }}" id="{{ atributo.field }}" name="{{ atributo.field }}"
           ></p-dropdown>
         </ng-container>
 

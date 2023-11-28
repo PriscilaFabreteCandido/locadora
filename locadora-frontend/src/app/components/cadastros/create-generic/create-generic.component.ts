@@ -121,6 +121,7 @@ export class CreateGenericComponent implements OnInit{
   }
 
   onSubmit() {
+    console.log('this.form', this.form.value  )
     if (this.form.valid) {
       this.submitted = false;
       var formData: any = this.form.value;

@@ -24,6 +24,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
 import { EfetuarDevolucaoComponent } from './components/locacao/efetuar-devolucao/efetuar-devolucao.component';
+import { ShowGenericComponent } from './components/cadastros/show-generic/show-generic.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { EfetuarDevolucaoComponent } from './components/locacao/efetuar-devoluca
     NavBarComponent,
     MenubarComponent,
     CreateGenericComponent,
-    EfetuarDevolucaoComponent
+    EfetuarDevolucaoComponent,
+    ShowGenericComponent
   ],
   imports: [
     BrowserAnimationsModule,

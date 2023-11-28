@@ -22,9 +22,11 @@ export class CadastrosComponent implements OnInit{
   rota: string = '';
   openDialogDependentes: boolean = false;
   openDialogEfetuarDevolucao: boolean = false;
+  openVisualizarLocacao: boolean = false;
   showBtnLeft = false;
   idSocio: number = 0;
   idLocacaoParaEditar: number = 0;
+  clienteParaVisualizar: any;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -345,5 +347,10 @@ export class CadastrosComponent implements OnInit{
         console.log('this.results', this.results)
       }
     });
+  }
+
+  openLocacao(entity: any){
+    this.clienteParaVisualizar = entity;
+    this.openVisualizarLocacao = true;
   }
 }
