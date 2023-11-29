@@ -3,7 +3,28 @@
     <p-button *ngIf="showBtnLeft" (onClick)="onClickBtnLeft()" icon="pi pi-arrow-circle-left" class="left-btn"></p-button>
     <h1>{{nomeEntidade}}</h1>
   </div>
-  <p-button *ngIf="nomeEntidade != 'Histórico de Devoluções'"label="Cadastrar" styleClass="p-button-success" (onClick)="openModal()"></p-button>
+  <p-button *ngIf="nomeEntidade != 'Histórico de Devoluções' && nomeEntidade != 'Consultar Titulo'" label="Cadastrar" styleClass="p-button-success" (onClick)="openModal()"></p-button>
+</div>
+
+<div *ngIf="nomeEntidade == 'Consultar Titulo'" style="display: flex; margin-bottom: 0.5rem;">
+ <div style="display: flex; gap: 1rem; margin-right: 0.5rem;">
+  <h3>Nome: </h3>
+  <input pInputText [(ngModel)]="nomeTituloFilter" type="text" placeholder="Digite o nome do título" (onChange)="onChangeConsultarTitulo()">
+ </div>
+
+ <div style="display: flex; gap: 1rem; margin-right: 0.5rem;">
+  <h3 style="position: relative; bottom: 7px; ">Categoria: </h3>
+  <p-dropdown [options]="categorias" [(ngModel)]="categoriaFilter" [placeholder]="idEntidade <= 0 ? 'Selecione uma Categoria' : ''"
+  (onChange)="onChangeConsultarTitulo()"
+  ></p-dropdown>
+ </div>
+
+ <div style="display: flex; gap: 1rem; margin-right: 0.5rem;">
+  <h3 style="position: relative; bottom: 7px; ">Ator: </h3>
+  <p-dropdown [options]="atores" [(ngModel)]="atorFilter" [placeholder]="idEntidade <= 0 ? 'Selecione um Ator' : ''"  optionLabel="nome"
+  (onChange)="onChangeConsultarTitulo()"
+  ></p-dropdown>
+ </div>
 </div>
 
 <p-table [columns]="cols" [value]="results" [tableStyle]="{ 'min-width': '50rem' }">
@@ -13,7 +34,7 @@
           <th *ngIf="col.isShow">{{ col.header }}</th>
         </ng-container>
 
-        <th>Ações</th>
+        <th >Ações</th>
       </tr>
   </ng-template>
 
@@ -24,9 +45,10 @@
           <td *ngIf="col.isShow && (col.type == 'text' || col.type == 'number')"> {{ rowData[col.field] }}</td>
           <td *ngIf="col.isShow && col.type == 'cliente'"> {{ rowData.cliente.nome }}</td>
           <td *ngIf="col.isShow && col.type == 'item'"> {{ rowData.item.numSerie }}</td>
+          <td *ngIf="col.isShow && col.type == 'categoria'"> {{ rowData.categoria }}</td>
         </ng-container>
 
-        <td>
+        <td *ngIf="nomeEntidade != 'Consultar Titulo'">
           <p-button *ngIf="nomeEntidade != 'Histórico de Devoluções'" pTooltip="Editar" icon="pi pi-pencil" class="mr-1" styleClass="p-button-warning" (onClick)="editarEntidade(rowData)"></p-button>
           <p-button *ngIf="nomeEntidade != 'Locação' && nomeEntidade != 'Histórico de Devoluções'" pTooltip="Excluir" icon="pi pi-trash" class="mr-1" styleClass="p-button-danger" (onClick)="showConfirmationToDelete(rowData)"></p-button>
 
@@ -46,6 +68,7 @@
 
         </td>
 
+        <td *ngIf="nomeEntidade == 'Consultar Titulo'"><p-button  pTooltip="Visualizar Título" icon="pi pi-info" class="mr-1" styleClass="p-button-help" (onClick)="visualizarTitulo(rowData)"></p-button></td>
       </tr>
   </ng-template>
 </p-table>
@@ -79,10 +102,12 @@
 <p-messages></p-messages>
 
 
-<p-dialog [header]="'Visualizar Locação'" [(visible)]="openVisualizarLocacao" [responsive]="true"
+<p-dialog [header]="'Visualizar Entidade'" [(visible)]="openVisualizarLocacao" [responsive]="true"
   [style]="{ 'width': '80vw', 'min-height': '80hw' }">
   <ng-container *ngIf="openVisualizarLocacao">
-    <show-generic [cliente]="clienteParaVisualizar" (onSave)="onDevolverItem($event)" >
+    <show-generic [cliente]="clienteParaVisualizar"
+    [titulo]="tituloParaVisualizar"
+     (onSave)="onDevolverItem($event)" >
     </show-generic>
   </ng-container>
 </p-dialog>

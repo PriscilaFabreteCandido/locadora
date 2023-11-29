@@ -89,6 +89,14 @@ export class ConsultasService {
       );
   }
 
+  findTituloByNomeCategoriaIdAtor(nome: string, categoria: string, idAtor: number): Observable<any> {
+    return this.http.get(`${this.API}${'/locacoes/devolver'}/${nome}`)
+      .pipe(
+        map((res: any) => res),
+        catchError(this.handleError)
+      );
+  }
+
   private handleError(error: any): Observable<never> {
     console.log('error', error)
     let errorMessage = 'Ocorreu um erro no serviço.';

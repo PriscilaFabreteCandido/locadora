@@ -27,6 +27,21 @@ export class CadastrosComponent implements OnInit{
   idSocio: number = 0;
   idLocacaoParaEditar: number = 0;
   clienteParaVisualizar: any;
+  categorias: string[] = [
+    'Ação',
+    'Comédia',
+    'Drama',
+    'Ficção Científica',
+    'Romance',
+    'Terror',
+    'Documentário'
+  ];
+
+  categoriaFilter: any;
+  nomeTituloFilter: any;
+  atorFilter: any;
+  atores: any = [];
+  tituloParaVisualizar: any;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -69,7 +84,7 @@ export class CadastrosComponent implements OnInit{
       });
     }
 
-
+    this.getAllAtores();
   }
 
   getRota(tipo: string): string{
@@ -98,6 +113,9 @@ export class CadastrosComponent implements OnInit{
           break;
       case 'Locação':
         rota = '/locacoes';
+        break;
+      case 'Consultar Titulo':
+        rota = '/titulos';
         break;
       case 'Histórico de Devoluções':
         rota = '/locacoes/devolucoes'
@@ -142,7 +160,7 @@ export class CadastrosComponent implements OnInit{
       case 'Titulo':
         cols = [
           { field: 'nome', header: 'Nome', type: 'text', isShow: true, isShowForm: true},
-          { field: 'categoria', header: 'Categoria', type: 'text', isShow: true, isShowForm: true},
+          { field: 'categoria', header: 'Categoria', type: 'categoria', isShow: true, isShowForm: true},
           { field: 'sinopse', header: 'Sinopse', type: 'text', isShow: true, isShowForm: true},
           { field: 'ano', header: 'Ano', type: 'number', isShow: true, isShowForm: true},
           { field: 'atores', header: 'Atores', type: 'ator', isShow: false, isShowForm: true},
@@ -189,6 +207,17 @@ export class CadastrosComponent implements OnInit{
             { field: 'dtDevolucaoEfetiva', header: 'Data da Devolução Efetiva', type: 'date', isShow: true, isShowForm: true},
           ];
             break;
+        case 'Consultar Titulo':
+          cols = [
+            { field: 'nome', header: 'Nome', type: 'text', isShow: true, isShowForm: true},
+            { field: 'categoria', header: 'Categoria', type: 'categoria', isShow: true, isShowForm: true},
+            { field: 'sinopse', header: 'Sinopse', type: 'text', isShow: true, isShowForm: true},
+            { field: 'ano', header: 'Ano', type: 'number', isShow: true, isShowForm: true},
+            { field: 'atores', header: 'Atores', type: 'ator', isShow: false, isShowForm: true},
+            { field: 'diretor', header: 'Diretor', type: 'diretor', isShow: false, isShowForm: true},
+            { field: 'classe', header: 'Classe', type: 'classe', isShow: false, isShowForm: true},
+          ];
+          break;
     }
 
     return cols;
@@ -351,6 +380,24 @@ export class CadastrosComponent implements OnInit{
 
   openLocacao(entity: any){
     this.clienteParaVisualizar = entity;
+    this.openVisualizarLocacao = true;
+  }
+
+
+  onChangeConsultarTitulo(){
+
+  }
+
+  getAllAtores(){
+    this.consultasService.getAll('/atores').subscribe(resp => {
+      if(resp){
+        this.atores = resp;
+      }
+    });
+  }
+
+  visualizarTitulo(entity: any){
+    this.tituloParaVisualizar = entity;
     this.openVisualizarLocacao = true;
   }
 }

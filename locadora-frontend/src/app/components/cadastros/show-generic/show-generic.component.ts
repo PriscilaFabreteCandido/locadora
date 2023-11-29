@@ -8,6 +8,7 @@ import { ConsultasService } from 'src/app/services/consultas.service';
 })
 export class ShowGenericComponent implements OnInit {
   @Input() numSerie: number = 0;
+  @Input() titulo: any;
   @Input() cliente: any;
 
   constructor(private consultasService: ConsultasService){}
@@ -25,4 +26,17 @@ export class ShowGenericComponent implements OnInit {
     }
 
   }
+
+  getStringAtores(atores: any[]): string{
+    if(atores){
+      let string = '';
+      atores.forEach(x => {
+        string += x.nome + "; "
+      })
+      return string;
+    }
+    return '';
+  }
+
+  
 }

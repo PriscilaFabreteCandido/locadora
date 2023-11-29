@@ -39,6 +39,12 @@
           ></p-dropdown>
         </ng-container>
 
+        <ng-container *ngSwitchCase="'categoria'">
+          <p-dropdown [options]="categorias" [(ngModel)]="selectedCategoria" [placeholder]="idEntidade <= 0 ? 'Selecione uma categoria' : ''"
+          formControlName="{{ atributo.field }}" id="{{ atributo.field }}" name="{{ atributo.field }}"
+          ></p-dropdown>
+        </ng-container>
+
         <ng-container *ngSwitchCase="'item'">
           <p-dropdown [options]="itens" [(ngModel)]="selectedItem" [placeholder]="idEntidade <= 0 ? 'Selecione um Item' : ''"  optionLabel="numSerie"
           formControlName="{{ atributo.field }}" id="{{ atributo.field }}" name="{{ atributo.field }}" (onChange)="onChangeItem()"

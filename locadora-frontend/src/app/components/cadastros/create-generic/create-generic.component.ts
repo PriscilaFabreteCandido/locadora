@@ -31,12 +31,21 @@ export class CreateGenericComponent implements OnInit{
   selectedClasse: any;
   selectedTitulo: any;
   selectedCliente: any;
+  selectedCategoria: any;
   selectedSexo: any;
   selectedItem: any;
   sexos: any[] = ['Feminino', 'Masculino']
 
   entidade: any;
-
+  categorias: string[] = [
+    'Ação',
+    'Comédia',
+    'Drama',
+    'Ficção Científica',
+    'Romance',
+    'Terror',
+    'Documentário'
+  ];
 
   constructor(private fb:FormBuilder,
               private consultasService: ConsultasService,

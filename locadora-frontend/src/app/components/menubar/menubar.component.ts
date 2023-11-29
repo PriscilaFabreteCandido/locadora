@@ -91,7 +91,7 @@ export class MenubarComponent implements OnInit{
                 label: 'Titulo',
                 icon: 'pi pi-file',
                 command: () => {
-                  this.router.navigate(['/cadastros/Ator']);
+                  this.router.navigate(['/cadastros/Consultar Titulo']);
               }
             },
         ]

@@ -6,6 +6,16 @@
   <label for="" >Data de Nascimento: {{ cliente.dtNascimento | date:'dd/MM/yyyy' }}</label>
   <label for="" >Sexo: {{cliente.sexo}}</label>
   <label for="" >Endereco: {{cliente.endereco}}</label>
+</div>
 
+<div class="flex flex-column" *ngIf="titulo">
+  <label for="" >Nome do Título: {{titulo.nome}}</label>
+  <label for="" >Categoria: {{titulo.categoria}}</label>
+  <label for="" >Sinopse: {{titulo.sinopse}}</label>
+  <label for="" >Ano: {{ titulo.ano}}</label>
+  <label for="" >Atores: {{getStringAtores(titulo.listaAtores)}}</label>
+  <label for="" >Diretor: {{titulo.diretor.nome}}</label>
+  <label for="" >Classe: {{titulo.classe.nome}}</label>
+  <label for="" >Valor de Alocação: {{titulo.classe.valor}}</label>
 </div>
 
