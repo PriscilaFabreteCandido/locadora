@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -34,11 +33,11 @@ public class LocacaoService {
                 () -> new EntityNotFoundException("Cliente não encontrado."));
 
         if (clienteEstaEmDebito(cliente)) {
-            throw new IllegalStateException("O cliente está em débito. Não é possível realizar nova locação.");
+            throw new EntityNotFoundException("O cliente está em débito. Não é possível realizar nova locação.");
         }
 
         if (!itemEstaDisponivel(item)) {
-            throw new IllegalStateException("Não há itens disponíveis do tipo solicitado");
+            throw new EntityNotFoundException("Não há itens disponíveis do tipo solicitado");
         }
 
         Locacao novaLocacao = new Locacao();
