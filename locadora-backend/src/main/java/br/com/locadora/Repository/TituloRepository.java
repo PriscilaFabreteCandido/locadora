@@ -13,7 +13,7 @@ public interface TituloRepository extends JpaRepository<Titulo, Long> {
     @Query("SELECT t FROM Titulo t " +
             "JOIN t.listaAtores a " +
             "WHERE (a.nome = :nomeAtor OR :nomeAtor IS NULL) " +
-            "AND (t.nome = :nomeTitulo OR :nomeTitulo IS NULL) " +
+            "AND (LOWER(t.nome) LIKE CONCAT('%', LOWER(:nomeTitulo), '%') OR :nomeTitulo IS NULL) " +
             "AND (t.categoria = :categoria OR :categoria IS NULL)")
     List<Titulo> findByAtorCategoriaNome(
             @Param("nomeAtor") String nomeAtor,
