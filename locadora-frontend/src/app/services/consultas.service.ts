@@ -89,8 +89,30 @@ export class ConsultasService {
       );
   }
 
-  findTituloByNomeCategoriaIdAtor(nome: string, categoria: string, idAtor: number): Observable<any> {
-    return this.http.get(`${this.API}${'/locacoes/devolver'}/${nome}`)
+  findTituloByNomeCategoriaIdAtor(titulo: string, nomeAtor: number, categoria: string): Observable<any> {
+    const baseAPI = this.API;
+    let url = `${baseAPI}/consulta?`;
+
+    // Adiciona o título à URL se não for nulo
+    if (titulo) {
+      url += `titulo=${titulo}&`;
+    }
+
+    // Adiciona o nome do ator à URL se não for nulo
+    if (nomeAtor) {
+      url += `ator=${nomeAtor}&`;
+    }
+
+    // Adiciona a categoria à URL se não for nula
+    if (categoria) {
+      url += `categoria=${categoria}&`;
+    }
+
+    // Remove o último caractere '&' se a URL não estiver vazia
+    if (url.endsWith('&')) {
+      url = url.slice(0, -1);
+    }
+    return this.http.get(url)
       .pipe(
         map((res: any) => res),
         catchError(this.handleError)

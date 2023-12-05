@@ -385,13 +385,17 @@ export class CadastrosComponent implements OnInit{
 
 
   onChangeConsultarTitulo(){
-
+    this.consultasService.findTituloByNomeCategoriaIdAtor(this.nomeTituloFilter ? this.nomeTituloFilter : '', this.atorFilter && this.atorFilter.nome != 'Todos'? this.atorFilter.nome : '', this.categoriaFilter ? this.categoriaFilter : '' ).subscribe(resp => {
+      this.results = resp;
+    })
   }
 
   getAllAtores(){
     this.consultasService.getAll('/atores').subscribe(resp => {
       if(resp){
         this.atores = resp;
+        this.atores.push({nome: 'Todos'});
+        console.log('atores', this.atores);
       }
     });
   }

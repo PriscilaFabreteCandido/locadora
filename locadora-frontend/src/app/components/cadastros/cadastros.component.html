@@ -9,7 +9,7 @@
 <div *ngIf="nomeEntidade == 'Consultar Titulo'" style="display: flex; margin-bottom: 0.5rem;">
  <div style="display: flex; gap: 1rem; margin-right: 0.5rem;">
   <h3>Nome: </h3>
-  <input pInputText [(ngModel)]="nomeTituloFilter" type="text" placeholder="Digite o nome do título" (onChange)="onChangeConsultarTitulo()">
+  <input pInputText [(ngModel)]="nomeTituloFilter" type="text" placeholder="Digite o nome do título" (ngModelChange)="onChangeConsultarTitulo()">
  </div>
 
  <div style="display: flex; gap: 1rem; margin-right: 0.5rem;">
