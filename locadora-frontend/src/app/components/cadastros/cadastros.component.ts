@@ -34,7 +34,8 @@ export class CadastrosComponent implements OnInit{
     'Ficção Científica',
     'Romance',
     'Terror',
-    'Documentário'
+    'Documentário',
+    'Todos'
   ];
 
   categoriaFilter: any;
@@ -385,7 +386,7 @@ export class CadastrosComponent implements OnInit{
 
 
   onChangeConsultarTitulo(){
-    this.consultasService.findTituloByNomeCategoriaIdAtor(this.nomeTituloFilter ? this.nomeTituloFilter : '', this.atorFilter && this.atorFilter.nome != 'Todos'? this.atorFilter.nome : '', this.categoriaFilter ? this.categoriaFilter : '' ).subscribe(resp => {
+    this.consultasService.findTituloByNomeCategoriaIdAtor(this.nomeTituloFilter ? this.nomeTituloFilter : '', this.atorFilter && this.atorFilter.nome != 'Todos'? this.atorFilter.nome : '', this.categoriaFilter && this.categoriaFilter != 'Todos' ? this.categoriaFilter : '' ).subscribe(resp => {
       this.results = resp;
     })
   }
